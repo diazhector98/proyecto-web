@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import SignUpPage from './pages/sign-up'
 import LoginPage from './pages/login'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (

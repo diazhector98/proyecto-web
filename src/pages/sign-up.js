@@ -1,5 +1,6 @@
 import React from 'react'
 
+import Button from 'react-bootstrap/Button';
 
 const SignUpPage = () => {
     return (
@@ -7,7 +8,7 @@ const SignUpPage = () => {
 
 <input type="text" placeholder="Enter Username" name="uname" required/>
 <input type="text" placeholder="Enter password" name="upassword" required/>
-<button>Sign up</button>
+<Button>Sign up de bootstrap</Button>
 
         </div>
     )
