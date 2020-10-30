@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
 
-const homePage = () => {
+const booksPage = () => {
     return (
         <div>
    
@@ -26,4 +26,4 @@ const homePage = () => {
     )
 }
 
-export default homePage
+export default booksPage
