@@ -1,9 +1,13 @@
 import React from 'react'
 
+//Agregar el logo
+import logo from '../pages/assets/logo1.png'
+
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+
 
 
 const homePage = () => {
@@ -11,11 +15,15 @@ const homePage = () => {
         <div>
    
    <Navbar bg="light" variant="light">
-    <Navbar.Brand href="#home">Logo</Navbar.Brand>
+    <Navbar.Brand href="/home">
+      {/* 71 y 100 */}
+    <img src={logo} alt="Logo" height = "61px" width = "90" />
+
+    </Navbar.Brand>
     <Nav className="mr-auto">
-      <Nav.Link href="#home">Home</Nav.Link>
-      <Nav.Link href="#features">Categorias</Nav.Link>
-      <Nav.Link href="#pricing">Mis libros</Nav.Link>
+      <Nav.Link href="/home">Home</Nav.Link>
+      <Nav.Link href="/category">Categorias</Nav.Link>
+      <Nav.Link href="/books">Mis libros</Nav.Link>
     </Nav>
     <Form inline>
       <Form.Control type="text" placeholder="Busca un libro" className="mr-sm-2" />
