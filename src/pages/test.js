@@ -39,10 +39,29 @@ const Test = () => {
                 <input type="text" placeholder="Search Book" onChange={(e) =>setTextQuery(e.target.value)}/>
                 <button onClick={searchBooks}>Search</button>
 
-                <div>
+                <div style={{
+                    display: "flex",
+                    flexWrap: "wrap"
+                }}>
                     {
                         books.map((book, index) => {
-                            return <p key={index}>{book.title}</p>
+                            return (
+
+                                <div style={{
+                                    margin: 40,
+                                    width: 200
+                                }}>
+                                    <img style={{
+                                        width: 100,
+                                        height: 200
+                                    }}src={book.imageLinks ? book.imageLinks.smallThumbnail : ""} />
+                                    <p key={index}><b>{book.title}</b></p>
+                                    <p>{book.subtitle}</p>
+                                </div>
+
+                            
+                            
+                            )
                         })
                     }
                 </div>
