@@ -1,17 +1,38 @@
-import React from 'react'
-
+import React, {useCallback} from 'react';
+import {withRouter} from "react-router";
+import app from "../base.js"
 import Button from 'react-bootstrap/Button';
 
-const SignUpPage = () => {
+const SignUpPage = ({history}) => {
+    const handleSignUp = useCallback(async event => {
+        event.preventDefault();
+        const {email, password} = event.target.elements;
+        try {
+            await app
+            .auth()
+            .createUserWithEmailAndPassword(email.value, password.value);
+            history.push("/");
+        } catch (error){
+            alert(error);
+        }
+    }, [history]); 
+
     return (
         <div>
-
-<input type="text" placeholder="Enter Username" name="uname" required/>
-<input type="text" placeholder="Enter password" name="upassword" required/>
-<Button>Sign up de bootstrap</Button>
-
+            <h1>Sign Up</h1>
+            <form onSubmit={handleSignUp}>
+                <label>
+                    Email
+                    <input type="email" placeholder="Email" name="email" required/>
+                </label>
+                <label>
+                    Password
+                    <input type="password" placeholder="Password" name="password" required/>
+                    <Button type = "submit">Sign up</Button>
+                </label>
+            </form>
         </div>
     )
 }
 
-export default SignUpPage
+export default withRouter(SignUpPage);
