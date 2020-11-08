@@ -13,11 +13,10 @@ import stylesheet from '../pages/assets/styleTable.css'
 const homePage = () => {
     return (
         <div>
-   
-   <Navbar bg="light" variant="light">
-    <Navbar.Brand href="/home">
-      {/* 71 y 100 */}
-    <img src={logo} alt="Logo" height = "61px" width = "90" />
+          <Navbar bg="light" variant="light">
+            <Navbar.Brand href="/home">
+              {/* 71 y 100 */}
+            <img src={logo} alt="Logo" height = "61px" width = "90" />
 
     </Navbar.Brand>
     <Nav className="mr-auto">
