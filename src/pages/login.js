@@ -59,7 +59,6 @@ const Login = ({ history }) => {
         <h1>Log in</h1>
         <form onSubmit = {handleLogin}>
           <div>
-
             <label>
                 Email
                 <input name = "email" type = "email" placeholder = "Email" required />
