@@ -13,7 +13,9 @@ import {
   ReactiveBase,
   DataSearch,
   SingleRange,
-  ResultCard
+  ResultCard,
+  ReactiveList,
+  ResultList
 } from '@appbaseio/reactivesearch';
 
 
@@ -61,27 +63,42 @@ const homePage = () => {
               />
             </div>
             <div className={"mainBar"}>
-              <ResultCard
-                componentId="results"
-                dataField="original_title"
-                react={{
-                  "and": ["mainSearch", "ratingsFilter"]
-                }}
-                pagination={true}
-                size={8}
-                onData={(res)=>(
-                  {
-                    "image": res.image,
-                    "title": res.original_title,
-                    "description":  res.average_rating + " ★ "
+            <ReactiveList
+              componentId="SearchResult"
+              dataField="original_title"
+              size={3}
+              className="result-list-container"
+              pagination
+              URLParams
+              react={{
+                and: ['ratingsFilter', 'mainSearch'],
+              }}
+              render={({ data }) => (
+                <ReactiveList.ResultListWrapper>
+                  {data.map(item => (
+                    <div onClick={() => console.log({item})}>
+                      <ResultList key={item._id}>
+                        <ResultList.Image src={item.image} />
+                        <ResultList.Content>
+                          <ResultList.Title>
+                            <div
+                              className="book-title"
+                              dangerouslySetInnerHTML={{
+                                __html: item.original_title,
+                              }}
+                            />
+                          </ResultList.Title>
+                        </ResultList.Content>
+                      </ResultList>
+                    </div>
+								    
+
+                  ))
                   }
+
+                </ReactiveList.ResultListWrapper> 
                 )}
-                className="result-data"
-                innerClass={{
-                  "image": "result-image",
-                  "resultStats": "result-stats"
-                }}
-              />
+            />
             </div>
         </div>
       </div>
