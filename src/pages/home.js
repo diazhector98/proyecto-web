@@ -8,6 +8,7 @@ import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import stylesheet from '../pages/assets/styleTable.css'
+import '../pages/assets/home.css'
 import {
   ReactiveBase,
   DataSearch,
@@ -30,45 +31,59 @@ const homePage = () => {
               <Nav.Link href="/category">Categorias</Nav.Link>
               <Nav.Link href="/books">Mis libros</Nav.Link>
             </Nav>
-            <Form inline>
-              <Form.Control type="text" placeholder="Busca un libro" className="mr-sm-2" />
-              <Button variant="outline-primary">Buscar</Button>
-            </Form>
-            
-            </Navbar>
-
             <DataSearch
               componentId="mainSearch"
               dataField={["original_title", "original_title.search", "authors", "authors.search"]}
               queryFormat="and"
-              iconPosition="left"
-            />
-            <SingleRange
-              componentId="ratingsFilter"
-              dataField="average_rating"
-              title="Book Ratings"
-              data={[
-                { start: 4, end: 5, label: "★★★★ & up" },
-                { start: 3, end: 5, label: "★★★ & up" },
-                { start: 2, end: 5, label: "★★ & up" },
-                { start: 1, end: 5, label: "★ & up" },
-              ]}
-              react={{
-                and: "mainSearch"
+              placeholder="Search for a book title or an author"
+              autosuggest={false}
+              className="datasearch"
+              innerClass={{
+                "input": "searchbox",
+                "list": "suggestionlist"
               }}
             />
-            <ResultCard
-              componentId="results"
-              dataField="original_title"
-              react={{
-                "and": ["mainSearch", "ratingsFilter"]
-              }}
-              onData={(res)=>({
-                "image": res.image,
-                "title": res.original_title,
-                "description":  res.average_rating + " ★ "
-              })}
-            />
+            
+            </Navbar>
+
+           <div className={"display"}>
+            <div className={"leftSidebar"}>
+              <SingleRange
+                componentId="ratingsFilter"
+                dataField="average_rating"
+                title="Book Ratings"
+                data={[
+                  { start: 4, end: 5, label: "★★★★ & up" },
+                  { start: 3, end: 5, label: "★★★ & up" },
+                  { start: 2, end: 5, label: "★★ & up" },
+                  { start: 1, end: 5, label: "★ & up" },
+                ]}
+              />
+            </div>
+            <div className={"mainBar"}>
+              <ResultCard
+                componentId="results"
+                dataField="original_title"
+                react={{
+                  "and": ["mainSearch", "ratingsFilter"]
+                }}
+                pagination={true}
+                size={8}
+                onData={(res)=>(
+                  {
+                    "image": res.image,
+                    "title": res.original_title,
+                    "description":  res.average_rating + " ★ "
+                  }
+                )}
+                className="result-data"
+                innerClass={{
+                  "image": "result-image",
+                  "resultStats": "result-stats"
+                }}
+              />
+            </div>
+        </div>
       </div>
     )
 }
