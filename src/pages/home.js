@@ -8,6 +8,15 @@ import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import stylesheet from '../pages/assets/styleTable.css'
+import '../pages/assets/home.css'
+import {
+  ReactiveBase,
+  DataSearch,
+  SingleRange,
+  ResultCard,
+  ReactiveList,
+  ResultList
+} from '@appbaseio/reactivesearch';
 
 
 const homePage = () => {
@@ -18,43 +27,81 @@ const homePage = () => {
               {/* 71 y 100 */}
             <img src={logo} alt="Logo" height = "61px" width = "90" />
 
-    </Navbar.Brand>
-    <Nav className="mr-auto">
-      <Nav.Link href="/home">Home</Nav.Link>
-      <Nav.Link href="/category">Categorias</Nav.Link>
-      <Nav.Link href="/books">Mis libros</Nav.Link>
-    </Nav>
-    <Form inline>
-      <Form.Control type="text" placeholder="Busca un libro" className="mr-sm-2" />
-      <Button variant="outline-primary">Buscar</Button>
-    </Form>
-    
-    </Navbar>
+            </Navbar.Brand>
+            <Nav className="mr-auto">
+              <Nav.Link href="/home">Home</Nav.Link>
+              <Nav.Link href="/category">Categorias</Nav.Link>
+              <Nav.Link href="/books">Mis libros</Nav.Link>
+            </Nav>
+            <DataSearch
+              componentId="mainSearch"
+              dataField={["original_title", "original_title.search", "authors", "authors.search"]}
+              queryFormat="and"
+              placeholder="Search for a book title or an author"
+              autosuggest={false}
+              className="datasearch"
+              innerClass={{
+                "input": "searchbox",
+                "list": "suggestionlist"
+              }}
+            />
+            
+            </Navbar>
 
-<div class = "row">
-  <div class = "column">
-  <img src={logo} alt="Logo"  />
-  </div>
-  <div class = "column">
-  <img src={logo} alt="Logo"  />
-  </div>
-  <div class = "column">
-   <img src={logo} alt="Logo"  />
-  </div>
-  </div>
-   
-  <div class = "row">
-  <div class = "column">
-  <img src={logo} alt="Logo"  />
-  </div>
-  <div class = "column">
-  <img src={logo} alt="Logo"  />
-  </div>
-  <div class = "column">
-   <img src={logo} alt="Logo"  />
-  </div>
-  </div>
-</div>
+           <div className={"display"}>
+            <div className={"leftSidebar"}>
+              <SingleRange
+                componentId="ratingsFilter"
+                dataField="average_rating"
+                title="Book Ratings"
+                data={[
+                  { start: 4, end: 5, label: "★★★★ & up" },
+                  { start: 3, end: 5, label: "★★★ & up" },
+                  { start: 2, end: 5, label: "★★ & up" },
+                  { start: 1, end: 5, label: "★ & up" },
+                ]}
+              />
+            </div>
+            <div className={"mainBar"}>
+            <ReactiveList
+              componentId="SearchResult"
+              dataField="original_title"
+              size={3}
+              className="result-list-container"
+              pagination
+              URLParams
+              react={{
+                and: ['ratingsFilter', 'mainSearch'],
+              }}
+              render={({ data }) => (
+                <ReactiveList.ResultListWrapper>
+                  {data.map(item => (
+                    <div onClick={() => console.log({item})}>
+                      <ResultList key={item._id}>
+                        <ResultList.Image src={item.image} />
+                        <ResultList.Content>
+                          <ResultList.Title>
+                            <div
+                              className="book-title"
+                              dangerouslySetInnerHTML={{
+                                __html: item.original_title,
+                              }}
+                            />
+                          </ResultList.Title>
+                        </ResultList.Content>
+                      </ResultList>
+                    </div>
+								    
+
+                  ))
+                  }
+
+                </ReactiveList.ResultListWrapper> 
+                )}
+            />
+            </div>
+        </div>
+      </div>
     )
 }
 
