@@ -16,7 +16,7 @@ const SignUpPage = ({history}) => {
             await app
             .auth()
             .createUserWithEmailAndPassword(email.value, password.value);
-            history.push("/");
+            history.push("/home");
         } catch (error){
             alert(error);
         }
@@ -57,7 +57,7 @@ const SignUpPage = ({history}) => {
             </label>
             </div>
             <div>
-            <Button type = "submit">Log in</Button>
+            <Button type = "submit">Sign up</Button>
             </div>
             </form>
         </div>

@@ -71,6 +71,7 @@ const Login = ({ history }) => {
             </label>
             </div>
             <div>
+
             <Button type = "submit">Log in</Button>
             </div>
         </form>
