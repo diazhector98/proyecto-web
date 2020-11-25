@@ -8,11 +8,27 @@ import Nav from 'react-bootstrap/Nav'
 import logo from '../pages/assets/logo1.png'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import { AuthContext } from "../Auth.js"
+import firebase from "../base.js"
 
 const BooksPage = () => {
 
   let [textQuery, setTextQuery] = useState("")
   let [books, setBooks] = useState([])
+
+var user = firebase.auth().currentUser;
+var email,uid;
+
+if (user != null) {
+  console.log("Existe un usuario")
+  email = user.email;
+  uid = user.uid; 
+  console.log(email)
+   // The user's ID, unique to the Firebase project. Do NOT use
+                   // this value to authenticate with your backend server, if
+                   // you have one. Use User.getToken() instead.
+}
+
 
 
 
@@ -136,6 +152,7 @@ const BooksPage = () => {
 
 
         )
+
       })
     } </div> </div>
 
