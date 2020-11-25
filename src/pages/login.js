@@ -62,18 +62,13 @@ const Login = ({ history }) => {
               Password
                 <input name="password" type="password" placeholder="Password" required />
             </label>
-<<<<<<< HEAD
+
           </div>
           <div>
             <Button type="submit">Log in</Button>
           </div>
-=======
-            </div>
-            <div>
 
-            <Button type = "submit">Log in</Button>
-            </div>
->>>>>>> d74c03cc9a2aeeb3c169717abb874908b1a3c38d
+        
         </form>
       </div>
 

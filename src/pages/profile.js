@@ -46,15 +46,15 @@ const ProfilePage = () => {
 
             </Navbar>
             <div class="container">
-                <h1>Sign Up</h1>
+                <h1>Profile</h1>
                 <form>
                     <div>
                         <label>
-                            Name: 
+                            {name}
                         </label>
                     </div>
                     <div>
-                            Email:
+                            {email}
                     </div>
                     <div>
                         <Button type="submit">Log in</Button>
