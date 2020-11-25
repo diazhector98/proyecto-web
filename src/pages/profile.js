@@ -1,30 +1,32 @@
 import React, { useCallback } from 'react';
-import { withRouter } from "react-router";
-import app from "../base.js"
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import logo from '../pages/assets/logo1.png'
-import stylesheet from '../pages/assets/useraccess.css'
 import * as firebase from "firebase/app";
 import "firebase/auth";
-const SignUpPage = ({ history }) => {
-    const handleSignUp = useCallback(async event => {
-        event.preventDefault();
-        const { email, password } = event.target.elements;
-        try {
-            await app
-                .auth()
-                .createUserWithEmailAndPassword(email.value, password.value);
-            history.push("/profile");
-        } catch (error) {
-            alert(error);
+
+const ProfilePage = () => {
+
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            console.log("SOmeone is up")
+        } else {
+            console.log("This should not happen")
         }
-    }, [history]);
+    });
+
+    var user = firebase.auth().currentUser;
+    var name, email, uid;
+
+    if (user != null) {
+        name = user.displayName;
+        email = user.email;
+        uid = user.uid;  
+    }
 
     return (
-        <div class = "restof">
         <div>
             <Navbar bg="light" variant="light">
                 <Navbar.Brand href="/home">
@@ -45,18 +47,14 @@ const SignUpPage = ({ history }) => {
             </Navbar>
             <div class="container">
                 <h1>Sign Up</h1>
-                <form onSubmit={handleSignUp}>
+                <form>
                     <div>
                         <label>
-                            Email
-                <input name="email" type="email" placeholder="Email" required />
+                            Name: 
                         </label>
                     </div>
                     <div>
-                        <label>
-                            Password
-                <input name="password" type="password" placeholder="Password" required />
-                        </label>
+                            Email:
                     </div>
                     <div>
                         <Button type="submit">Log in</Button>
@@ -64,9 +62,8 @@ const SignUpPage = ({ history }) => {
                 </form>
             </div>
         </div>
-        </div>
 
     )
 }
 
-export default withRouter(SignUpPage);
+export default ProfilePage;

@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import SignUpPage from './pages/sign-up'
 import LoginPage from './pages/login'
 import homePage from './pages/home'
+import ProfilePage from './pages/profile'
 import categoryPage from './pages/category'
 import bookPage from './pages/books'
 import test from './pages/test'
@@ -25,6 +26,7 @@ function App() {
           <Route path="/category" component={categoryPage} />
           <Route path="/books" component={bookPage} />
           <Route path="/test" component={test} />
+          <Route path="/profile" component={ProfilePage} />
         </Switch>
       </div>
     </ReactiveBase>
