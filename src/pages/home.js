@@ -7,7 +7,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import stylesheet from '../pages/assets/styleTable.css'
+import '../pages/assets/styleTable.css'
 import '../pages/assets/home.css'
 import {
   ReactiveBase,
