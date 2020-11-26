@@ -1,7 +1,6 @@
-import React, { useCallback, useContext } from 'react'
-import { withRouter, Redirect } from 'react-router-dom'
+import React, { useCallback} from 'react'
+import { withRouter} from 'react-router-dom'
 import app from "../base.js"
-import { AuthContext } from "../Auth.js"
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'

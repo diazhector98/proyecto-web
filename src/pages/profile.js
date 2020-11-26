@@ -9,17 +9,8 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 
 const ProfilePage = ({ history }) => {
-    firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-            console.log("SOmeone is up")
-            console.log(user)
-        } else {
-            console.log("This should not happen")
-        }
-    });
 
     const LogOut = useCallback(async event => {
-        event.preventDefault();
         event.preventDefault();
         try {
             firebase.auth().signOut().then(()=>{
@@ -32,8 +23,22 @@ const ProfilePage = ({ history }) => {
         }
     }, [history]);
 
+    const Delete = useCallback(async event => {
+        event.preventDefault();
+        try {
+            firebase.auth().currentUser.delete().then(function() {
+                console.log("User deleted")
+              }).catch(function(error) {
+                // An error happened.
+              });
 
-    getUser
+            history.push("/home");
+        } catch (error) {
+            alert(error);
+        }
+    }, [history]);
+
+
     var user = firebase.auth().currentUser;
     var name, email, uid;
 
@@ -78,6 +83,9 @@ const ProfilePage = ({ history }) => {
                     </div>
                     <div>
                         <Button type="LogOut" onClick={LogOut}>Log Out</Button>
+                    </div>
+                    <div>
+                        <Button type="Danger" onClick={Delete}>Delete Account</Button>
                     </div>
                 </form>
             </div>

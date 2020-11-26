@@ -1,7 +1,6 @@
-import logo from './logo.svg';
 import './App.css';
-import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React from 'react';
+import {Route, Switch } from 'react-router-dom';
 import SignUpPage from './pages/sign-up'
 import LoginPage from './pages/login'
 import homePage from './pages/home'
