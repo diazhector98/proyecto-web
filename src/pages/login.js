@@ -50,26 +50,25 @@ const Login = ({ history }) => {
 
       <div class="container">
         <h1>Log in</h1>
-        <form onSubmit={handleLogin}>
-          <div>
-            <label>
-              Email
-                <input name="email" type="email" placeholder="Email" required />
-            </label>
-          </div>
-          <div>
-            <label>
-              Password
-                <input name="password" type="password" placeholder="Password" required />
-            </label>
 
-          </div>
-          <div>
-            <Button type="submit">Log in</Button>
-          </div>
+          <Form onSubmit={handleLogin}>
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control name="email" type="email" placeholder="Email" required />
+                        </Form.Group>
 
-        
-        </form>
+                        <Form.Group controlId="formBasicPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control name="password" type="password" placeholder="Password" required />
+                        </Form.Group>
+                        <Form.Group controlId="formBasicCheckbox">
+                            <Form.Check type="checkbox" label="Remember me" />
+                        </Form.Group>
+                        <Button variant="primary" type="submit">
+                            Submit
+                        </Button>
+                    </Form>
+
       </div>
 
     </div>

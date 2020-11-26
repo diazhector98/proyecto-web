@@ -1,3 +1,4 @@
+
 import React, { useCallback } from 'react';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar'
@@ -7,15 +8,35 @@ import logo from '../pages/assets/logo1.png'
 import * as firebase from "firebase/app";
 import "firebase/auth";
 
-const ProfilePage = () => {
-
+const ProfilePage = ({ history }) => {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             console.log("SOmeone is up")
+            console.log(user)
         } else {
             console.log("This should not happen")
         }
     });
+
+    const LogOut = useCallback(async event => {
+        event.preventDefault();
+        console.log("2 to leave")
+        event.preventDefault();
+        console.log("1 to leave")
+        try {
+            console.log("Wants to leave")
+            const auth = firebase.auth()
+            auth.signOut().then(()=>{
+                console.log("User has left")
+            })
+
+            history.push("/home");
+        } catch (error) {
+            alert(error);
+        }
+    }, [history]);
+
+
 
     var user = firebase.auth().currentUser;
     var name, email, uid;
@@ -23,7 +44,7 @@ const ProfilePage = () => {
     if (user != null) {
         name = user.displayName;
         email = user.email;
-        uid = user.uid;  
+        uid = user.uid;
     }
 
     return (
@@ -50,14 +71,17 @@ const ProfilePage = () => {
                 <form>
                     <div>
                         <label>
-                            {name}
+                            Name: {name}
                         </label>
                     </div>
                     <div>
-                            {email}
+                        Email: {email}
                     </div>
                     <div>
-                        <Button type="submit">Log in</Button>
+                        UserId: {uid}
+                    </div>
+                    <div>
+                        <Button type="LogOut" onClick={LogOut}>Log Out</Button>
                     </div>
                 </form>
             </div>
