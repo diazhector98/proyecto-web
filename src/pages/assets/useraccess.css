@@ -9,13 +9,14 @@
     background-color: white;
 }
 
-input[type=email], input[type=password] {
+input[type=email], input[type=password], input[type=name]  {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
     background-color: white;
     border: 1px solid #ccc;
+    text-align: left;
   }
 
   html,body{
