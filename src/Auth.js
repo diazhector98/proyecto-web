@@ -30,9 +30,8 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const Auth = () => {
-  const auth = firebase.auth()
-}
+
 export const DB = () => {
   const db = firebase.firestore()
+  return db
 }

@@ -20,13 +20,9 @@ const ProfilePage = ({ history }) => {
 
     const LogOut = useCallback(async event => {
         event.preventDefault();
-        console.log("2 to leave")
         event.preventDefault();
-        console.log("1 to leave")
         try {
-            console.log("Wants to leave")
-            const auth = firebase.auth()
-            auth.signOut().then(()=>{
+            firebase.auth().signOut().then(()=>{
                 console.log("User has left")
             })
 
@@ -37,7 +33,7 @@ const ProfilePage = ({ history }) => {
     }, [history]);
 
 
-
+    getUser
     var user = firebase.auth().currentUser;
     var name, email, uid;
 

@@ -7,7 +7,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import logo from '../pages/assets/logo1.png'
-import stylesheet from '../pages/assets/useraccess.css'
+import '../pages/assets/useraccess.css'
 
 
 const Login = ({ history }) => {
