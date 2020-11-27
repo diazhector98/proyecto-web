@@ -7,6 +7,7 @@ import Nav from 'react-bootstrap/Nav'
 import { Col, Form } from "react-bootstrap"
 import logo from '../pages/assets/logo1.png'
 import * as firebase from "firebase/app";
+import Mongo from '../utils/mongo'
 
 const SignUpPage = ({ history }) => {
     const handleSignUp = useCallback(async event => {
@@ -25,6 +26,13 @@ const SignUpPage = ({ history }) => {
                     var fname = first_name.value
                     var lname = last_name.value
                     console.log({user});
+
+                    const mongo = new Mongo();
+                    mongo.insertUser({
+                        firebaseId: user.uid,
+                        name: fname + " " + lname,
+                        email: email.value
+                    })
                     
                     const db = firebase.firestore();
                     db

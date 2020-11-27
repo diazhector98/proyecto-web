@@ -25,7 +25,7 @@ const BookPage = ({ history }) => {
     }, [])
 
     const onReadingNowClicked = () => {
-
+        
     }
 
     const onPlannningToReadClicked = () => {

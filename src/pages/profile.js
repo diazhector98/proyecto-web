@@ -20,6 +20,7 @@ const ProfilePage = ({ history }) => {
 
     useEffect(() => {
         app.auth().onAuthStateChanged((user) => {
+            console.log({user})
             if (user != null) {
                 console.log({user})
                 const db = firebase.firestore()
