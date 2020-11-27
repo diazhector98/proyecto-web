@@ -7,6 +7,7 @@ import homePage from './pages/home'
 import ProfilePage from './pages/profile'
 import LandingPage from './pages/landing'
 import categoryPage from './pages/category'
+import BookPage from './pages/book'
 import bookPage from './pages/books'
 import test from './pages/test'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -28,6 +29,7 @@ function App() {
           <Route path="/books" component={bookPage} />
           <Route path="/test" component={test} />
           <Route path="/profile" component={ProfilePage} />
+          <Route path="/book/:bookId" component={BookPage} />
         </Switch>
       </div>
     </ReactiveBase>

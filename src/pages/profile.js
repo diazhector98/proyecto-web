@@ -83,8 +83,6 @@ const ProfilePage = ({ history }) => {
         return React.createElement('div', null, formatName())
     }
 
-
-
     return (
         <div>
             <Navbar bg="light" variant="light">
