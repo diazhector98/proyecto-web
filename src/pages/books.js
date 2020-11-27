@@ -16,6 +16,25 @@ const BooksPage = () => {
   let [books, setBooks] = useState([])
 
 
+  var user = firebase.auth().currentUser;
+
+    if (user) {
+      console.log("HI")
+      const Navbar1 = () => (
+        <Nav.Link href = "/profile" key = {3}> Profile </Nav.Link>
+      )
+      const NavBar2 = () => (
+        <Button variant="light" key = {4}>Log Out</Button>
+      )
+    } else {
+      console.log("IH")
+      const Navbar1 = () => (
+        <Nav.Link href = "/login" key = {0}> Log In </Nav.Link> 
+      )
+      const NavBar2 = () => (
+        <Nav.Link href = "/signup" key = {2}> Sign Up </Nav.Link> 
+      )
+    }
 
 
 
@@ -56,52 +75,49 @@ const BooksPage = () => {
     console.log("Existe un usuario")
   }
 
-  return ( 
-   
-  <div>
-    <Navbar bg = "light"
-    variant = "light" >
-    <Navbar.Brand href = "/home" >
+  return (
 
-    <img src = {
-      logo
-    }
-    alt = "Logo"
-    height = "61px"
-    width = "90" / >
-    </Navbar.Brand>
+    <div>
+      <Navbar bg="light"
+        variant="light" >
+        <Navbar.Brand href="/home" >
 
-    <Nav className = "mr-auto" >
-    <Nav.Link href = "/home" > Home </Nav.Link> 
-    <Nav.Link href = "/category" > Categorias </Nav.Link> 
-    <Nav.Link href = "/books" > Mis libros </Nav.Link>   
-    </Nav > 
-    
-      
-    <Form inline >
-    <Nav.Link href = "/login" > Log In </Nav.Link> 
-    <Nav.Link href = "/signup" > Sign Up </Nav.Link> 
-    <Nav.Link href = "/profile" > Profile </Nav.Link>
-    <Button variant="light">Log Out</Button>  
-    <Form.Control type = "text"
-    placeholder = "Busca un libro"
-    className = "mr-sm-2"
-    onChange = {
-      (e) => setTextQuery(e.target.value)
-    }/> 
-    
-    <Button id ="buscarLibro" variant = "outline-primary" onClick = {
-      searchBooks
-    } > Search </Button>
+          <img src={
+            logo
+          }
+            alt="Logo"
+            height="61px"
+            width="90" />
+        </Navbar.Brand>
 
-   
-    </Form > 
+        <Nav className="mr-auto" >
+          <Nav.Link href="/home" > Home </Nav.Link>
+          <Nav.Link href="/category" > Categorias </Nav.Link>
+          <Nav.Link href="/books" > Mis libros </Nav.Link>
+        </Nav >
+
+
+        <Form inline >
+
+          <Form.Control type="text"
+            placeholder="Busca un libro"
+            className="mr-sm-2"
+            onChange={
+              (e) => setTextQuery(e.target.value)
+            } />
+
+          <Button id="buscarLibro" variant="outline-primary" onClick={
+            searchBooks
+          } > Search </Button>
+
+
+        </Form >
 
 
 
-    </Navbar>
+      </Navbar>
 
-{/*  
+      {/*  
     <div>
 
     <button onClick = {
@@ -109,47 +125,47 @@ const BooksPage = () => {
     } > Insert User </button> 
     </div>
 */}
-    <div>
-   
+      <div>
 
-    <div style = {
-      {
-        display: "flex",
-        flexWrap: "wrap"
-      }
-    } > {
-      books.map((book, index) => {
-        return (
 
-          <div style = {
-            {
-              margin: 40,
-              width: 200
-            }
-          } >
-          <img style = {
-            {
-              width: 100,
-              height: 200
-            }
+        <div style={
+          {
+            display: "flex",
+            flexWrap: "wrap"
           }
-          src = {
-            book.imageLinks ? book.imageLinks.smallThumbnail : ""
-          }/> <p key = {
-            index
-          } > < b > {
-            book.title
-          } </b></p >
-          <p> {
-            book.subtitle
-          } </p> </div >
+        } > {
+            books.map((book, index) => {
+              return (
+
+                <div style={
+                  {
+                    margin: 40,
+                    width: 200
+                  }
+                } >
+                  <img style={
+                    {
+                      width: 100,
+                      height: 200
+                    }
+                  }
+                    src={
+                      book.imageLinks ? book.imageLinks.smallThumbnail : ""
+                    } /> <p key={
+                      index
+                    } > < b > {
+                      book.title
+                    } </b></p >
+                  <p> {
+                    book.subtitle
+                  } </p> </div >
 
 
 
-        )
+              )
 
-      })
-    } </div> </div>
+            })
+          } </div> </div>
 
     </div>
   )

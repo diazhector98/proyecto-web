@@ -47,7 +47,7 @@ const Login = ({ history }) => {
 
       </Navbar>
 
-      <div class="container">
+      <div className="container">
         <h1>Log in</h1>
 
           <Form onSubmit={handleLogin}>

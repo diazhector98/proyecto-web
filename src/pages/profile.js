@@ -1,7 +1,6 @@
 
-import React, { useCallback } from 'react';
-import Button from 'react-bootstrap/Button';
-import Navbar from 'react-bootstrap/Navbar'
+import React, { useCallback, useEffect } from 'react';
+import { Row, Col, Button, Navbar } from "react-bootstrap"
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import logo from '../pages/assets/logo1.png'
@@ -13,7 +12,7 @@ const ProfilePage = ({ history }) => {
     const LogOut = useCallback(async event => {
         event.preventDefault();
         try {
-            firebase.auth().signOut().then(()=>{
+            firebase.auth().signOut().then(() => {
                 console.log("User has left")
             })
 
@@ -26,11 +25,11 @@ const ProfilePage = ({ history }) => {
     const Delete = useCallback(async event => {
         event.preventDefault();
         try {
-            firebase.auth().currentUser.delete().then(function() {
+            firebase.auth().currentUser.delete().then(function () {
                 console.log("User deleted")
-              }).catch(function(error) {
+            }).catch(function (error) {
                 // An error happened.
-              });
+            });
 
             history.push("/home");
         } catch (error) {
@@ -40,13 +39,30 @@ const ProfilePage = ({ history }) => {
 
 
     var user = firebase.auth().currentUser;
-    var name, email, uid;
-
+    var fname, lname, username, email, uid;
+    const db = firebase.firestore()
     if (user != null) {
-        name = user.displayName;
+        username = user.displayName;
         email = user.email;
         uid = user.uid;
+        db.collection('users').doc(uid).get().then((info) => {
+            fname = info.data().fname;
+            lname = info.data().lname;
+            console.log(fname, lname)
+        })
     }
+    function formatName() {
+        console.log(fname)
+        return fname + ' ' + lname;
+    }
+
+
+    const ProfileName = () => {
+
+        return React.createElement('div', null, formatName())
+    }
+
+
 
     return (
         <div>
@@ -67,27 +83,35 @@ const ProfilePage = ({ history }) => {
                 </Form>
 
             </Navbar>
-            <div class="container">
+            <div className="container">
                 <h1>Profile</h1>
                 <form>
                     <div>
                         <label>
-                            Name: {name}
+                            Name: <ProfileName />
                         </label>
                     </div>
                     <div>
-                        Email: {email}
+                        <label>
+                            Email: {email}
+                        </label>
                     </div>
                     <div>
-                        UserId: {uid}
-                    </div>
-                    <div>
-                        <Button type="LogOut" onClick={LogOut}>Log Out</Button>
-                    </div>
-                    <div>
-                        <Button type="Danger" onClick={Delete}>Delete Account</Button>
+                        <label>
+                            UserId: {uid}
+                        </label>
                     </div>
                 </form>
+                <div>
+                    <Row>
+                        <Col>
+                            <Button type="LogOut" onClick={LogOut}>Log Out</Button>
+                        </Col>
+                        <Col>
+                            <Button type="Danger" onClick={Delete}>Delete Account</Button>
+                        </Col>
+                    </Row>
+                </div>
             </div>
         </div>
 
