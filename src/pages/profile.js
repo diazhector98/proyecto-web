@@ -49,7 +49,7 @@ const ProfilePage = ({ history }) => {
                 console.log("User has left")
             })
 
-            history.push("/home");
+            history.push("/");
         } catch (error) {
             alert(error);
         }
@@ -64,7 +64,7 @@ const ProfilePage = ({ history }) => {
                 // An error happened.
             });
 
-            history.push("/home");
+            history.push("/");
         } catch (error) {
             alert(error);
         }
