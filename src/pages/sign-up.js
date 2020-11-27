@@ -24,17 +24,16 @@ const SignUpPage = ({ history }) => {
                     var user = firebase.auth().currentUser;
                     var fname = first_name.value
                     var lname = last_name.value
-                    console.log(user);
+                    console.log({user});
                     
                     const db = firebase.firestore();
-                    return db
+                    db
                       .collection("users")
                       .doc(user.uid)
                       .set({ fname, lname});
+                    history.push("/profile");
                   })
                   .catch((error) => console.error("Error: ", error));
-
-            history.push("/profile");
         } catch (error) {
             alert(error);
         }

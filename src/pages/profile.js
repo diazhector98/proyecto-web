@@ -1,18 +1,51 @@
 
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Row, Col, Button, Navbar } from "react-bootstrap"
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import logo from '../pages/assets/logo1.png'
 import * as firebase from "firebase/app";
 import "firebase/auth";
+import app from "../base.js"
+
 
 const ProfilePage = ({ history }) => {
+    var fname, lname, username, email, uid;
+    const [userInfo, setUserInfo] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        userId: "",
+    })
+
+    useEffect(() => {
+        app.auth().onAuthStateChanged((user) => {
+            if (user != null) {
+                console.log({user})
+                const db = firebase.firestore()
+                username = user.displayName;
+                email = user.email;
+                uid = user.uid;
+                db.collection('users').doc(uid).get().then((info) => {
+                    console.log({info})
+                    fname = info.data().fname;
+                    lname = info.data().lname;
+                    console.log(fname, lname)
+                    setUserInfo({
+                        firstName: fname,
+                        lastName: lname,
+                        email,
+                        userId: uid
+                    })
+                })
+            }
+        })
+    }, [])
 
     const LogOut = useCallback(async event => {
         event.preventDefault();
         try {
-            firebase.auth().signOut().then(() => {
+            app.auth().signOut().then(() => {
                 console.log("User has left")
             })
 
@@ -25,7 +58,7 @@ const ProfilePage = ({ history }) => {
     const Delete = useCallback(async event => {
         event.preventDefault();
         try {
-            firebase.auth().currentUser.delete().then(function () {
+            app.auth().currentUser.delete().then(function () {
                 console.log("User deleted")
             }).catch(function (error) {
                 // An error happened.
@@ -38,22 +71,10 @@ const ProfilePage = ({ history }) => {
     }, [history]);
 
 
-    var user = firebase.auth().currentUser;
-    var fname, lname, username, email, uid;
-    const db = firebase.firestore()
-    if (user != null) {
-        username = user.displayName;
-        email = user.email;
-        uid = user.uid;
-        db.collection('users').doc(uid).get().then((info) => {
-            fname = info.data().fname;
-            lname = info.data().lname;
-            console.log(fname, lname)
-        })
-    }
+    
     function formatName() {
         console.log(fname)
-        return fname + ' ' + lname;
+        return userInfo.firstName + ' ' + userInfo.lastName;
     }
 
 
@@ -93,12 +114,12 @@ const ProfilePage = ({ history }) => {
                     </div>
                     <div>
                         <label>
-                            Email: {email}
+                            Email: {userInfo.email}
                         </label>
                     </div>
                     <div>
                         <label>
-                            UserId: {uid}
+                            UserId: {userInfo.userId}
                         </label>
                     </div>
                 </form>
