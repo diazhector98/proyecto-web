@@ -23,11 +23,22 @@ const BookPage = ({ history }) => {
             console.log({e})
         })
     }, [])
+
+    const onReadingNowClicked = () => {
+
+    }
+
+    const onPlannningToReadClicked = () => {
+
+    }
+
     return (
         <div>
             <p>Id: {bookInfo.id}</p>
             <p>Title: {bookInfo.title}</p>
             <p>Published Date: {bookInfo.publishedDate}</p>
+            <Button onClick={onReadingNowClicked}>Leyendo Ahora</Button>
+            <Button onClick={onPlannningToReadClicked}>Planeo Leer</Button>
         </div>
 
     )
