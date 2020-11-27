@@ -5,6 +5,7 @@ import SignUpPage from './pages/sign-up'
 import LoginPage from './pages/login'
 import homePage from './pages/home'
 import ProfilePage from './pages/profile'
+import LandingPage from './pages/landing'
 import categoryPage from './pages/category'
 import bookPage from './pages/books'
 import test from './pages/test'
@@ -19,6 +20,7 @@ function App() {
       >
       <div className="App">
         <Switch>
+          <Route path="/" exact component={LandingPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/signup" component={SignUpPage} />
           <Route path="/home" component={homePage} />
