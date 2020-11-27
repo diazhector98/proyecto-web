@@ -3,6 +3,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Button from 'react-bootstrap/Button'
 import Library from '../utils/library'
+import Mongo from '../utils/mongo'
+import app from "../base.js"
 
 import {
     useParams
@@ -14,6 +16,9 @@ const BookPage = ({ history }) => {
         title: "",
         publishedDate: "",
     })
+    const [userInfo, setUserInfo] = useState({
+        userId: "",
+    })
 
     useEffect(() => {
         const library = new Library()
@@ -22,10 +27,28 @@ const BookPage = ({ history }) => {
         }).catch((e) => {
             console.log({e})
         })
+
+        app.auth().onAuthStateChanged((user) => {
+            if (user != null) {
+                const uid = user.uid;
+                setUserInfo({
+                    userId: uid
+                })
+            }
+        })
+
     }, [])
 
     const onReadingNowClicked = () => {
-        
+        const mongo = new Mongo()
+        console.log({bookInfo, userInfo})
+        mongo.addReadingNowBook({
+            firebaseId: userInfo.userId, 
+            bookId: bookInfo.id
+        }).then((result) => {
+            console.log({result})
+            alert("Libro agregado a Libros Leyendo")
+        })
     }
 
     const onPlannningToReadClicked = () => {
