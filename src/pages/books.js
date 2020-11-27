@@ -10,39 +10,36 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import firebase from "../base.js"
 
-const BooksPage = () => {
+const BooksPage = ({history}) => {
 
   let [textQuery, setTextQuery] = useState("")
   let [books, setBooks] = useState([])
 
-
   var user = firebase.auth().currentUser;
+  if (user) {
+    console.log("HI")
+    const Navbar1 = () => (
+      <Nav.Link href = "/profile" key = {3}> Profile </Nav.Link>
+    )
+    const NavBar2 = () => (
+      <Button variant="light" key = {4}>Log Out</Button>
+    )
+  } else {
+    console.log("IH")
+    const Navbar1 = () => (
+      <Nav.Link href = "/login" key = {0}> Log In </Nav.Link> 
+    )
+    const NavBar2 = () => (
+      <Nav.Link href = "/signup" key = {2}> Sign Up </Nav.Link> 
+    )
+  }
 
-    if (user) {
-      console.log("HI")
-      const Navbar1 = () => (
-        <Nav.Link href = "/profile" key = {3}> Profile </Nav.Link>
-      )
-      const NavBar2 = () => (
-        <Button variant="light" key = {4}>Log Out</Button>
-      )
-    } else {
-      console.log("IH")
-      const Navbar1 = () => (
-        <Nav.Link href = "/login" key = {0}> Log In </Nav.Link> 
-      )
-      const NavBar2 = () => (
-        <Nav.Link href = "/signup" key = {2}> Sign Up </Nav.Link> 
-      )
-    }
-
-
-
+  const onBookSelected = (bookId) => {
+    history.push(`/book/${bookId}`)
+  }
 
 
   const onInsertUser = () => {
-
-
     const mongo = new Mongo()
     mongo.insertUser({
       firebaseId: "testId",
@@ -142,7 +139,9 @@ const BooksPage = () => {
                     margin: 40,
                     width: 200
                   }
-                } >
+                } 
+                onClick={() => onBookSelected(book.id)}
+                >
                   <img style={
                     {
                       width: 100,
