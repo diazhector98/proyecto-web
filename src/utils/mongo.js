@@ -8,7 +8,6 @@ class Mongo {
         const result = await axios.get(`${DATABASE_PATH}user`, {params: {
             firebaseId
         }})
-
         return result
     }
 
@@ -21,12 +20,22 @@ class Mongo {
         return result
     }
 
+    getUserBooks = async ({firebaseId}) => {
+        const result = await axios.get(`${DATABASE_PATH}userBooks`, {params: {firebaseId}})
+        return result
+    }
+
     addReadingNowBook = async ({bookId, firebaseId}) => {
         const result = await axios.post(`${DATABASE_PATH}readingNow/`, null, {params: {
             firebaseId,
             bookId
         }})
 
+        return result
+    }
+
+    postBook = async (book) => {
+        const result = await axios.post(`${DATABASE_PATH}book`, null, {params: book})
         return result
     }
 }

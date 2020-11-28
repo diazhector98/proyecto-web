@@ -17,6 +17,7 @@ const ProfilePage = ({ history }) => {
         email: "",
         firebaseId: "",
     })
+    const [userBooks, setUserBooks] = useState([])
 
     useEffect(() => {
         app.auth().onAuthStateChanged((user) => {
@@ -27,8 +28,14 @@ const ProfilePage = ({ history }) => {
                 mongo.getUser({
                     firebaseId: uid
                 }).then((result) => {
-                    console.log({result})
                     setUserInfo(result.data)
+                })
+
+                mongo.getUserBooks({
+                    firebaseId: uid
+                }).then((result) => {
+                    console.log({result})
+                    setUserBooks(result.data)
                 })
             }
         })
