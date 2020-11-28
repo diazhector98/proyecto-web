@@ -7,7 +7,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import stylesheet from '../pages/assets/styleTable.css'
+import '../pages/assets/styleTable.css'
 import '../pages/assets/home.css'
 import {
   ReactiveBase,
@@ -29,7 +29,7 @@ const homePage = () => {
 
             </Navbar.Brand>
             <Nav className="mr-auto">
-              <Nav.Link href="/home">Home</Nav.Link>
+              <Nav.Link href="/home" class = "loggedIN" >Home</Nav.Link>
               <Nav.Link href="/category">Categorias</Nav.Link>
               <Nav.Link href="/books">Mis libros</Nav.Link>
             </Nav>

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+/*import React, { useEffect, useState } from "react";
 import app from "./base.js";
+import * as firebase from "firebase/app";
 
 export const AuthContext = React.createContext();
 
@@ -28,3 +29,10 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+
+export const DB = () => {
+  const db = firebase.firestore()
+  return db
+}
+*/

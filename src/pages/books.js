@@ -8,33 +8,38 @@ import Nav from 'react-bootstrap/Nav'
 import logo from '../pages/assets/logo1.png'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { AuthContext } from "../Auth.js"
 import firebase from "../base.js"
 
-const BooksPage = () => {
+const BooksPage = ({history}) => {
 
   let [textQuery, setTextQuery] = useState("")
   let [books, setBooks] = useState([])
 
-var user = firebase.auth().currentUser;
-var email,uid;
+  var user = firebase.auth().currentUser;
+  if (user) {
+    console.log("HI")
+    const Navbar1 = () => (
+      <Nav.Link href = "/profile" key = {3}> Profile </Nav.Link>
+    )
+    const NavBar2 = () => (
+      <Button variant="light" key = {4}>Log Out</Button>
+    )
+  } else {
+    console.log("IH")
+    const Navbar1 = () => (
+      <Nav.Link href = "/login" key = {0}> Log In </Nav.Link> 
+    )
+    const NavBar2 = () => (
+      <Nav.Link href = "/signup" key = {2}> Sign Up </Nav.Link> 
+    )
+  }
 
-if (user != null) {
-  console.log("Existe un usuario")
-  email = user.email;
-  uid = user.uid; 
-  console.log(email)
-   // The user's ID, unique to the Firebase project. Do NOT use
-                   // this value to authenticate with your backend server, if
-                   // you have one. Use User.getToken() instead.
-}
-
-
+  const onBookSelected = (bookId) => {
+    history.push(`/book/${bookId}`)
+  }
 
 
   const onInsertUser = () => {
-
-
     const mongo = new Mongo()
     mongo.insertUser({
       firebaseId: "testId",
@@ -62,51 +67,54 @@ if (user != null) {
     })
   }
 
+  var user = firebase.auth().currentUser;
+  if (user) {
+    console.log("Existe un usuario")
+  }
+
+  return (
+
+    <div>
+      <Navbar bg="light"
+        variant="light" >
+        <Navbar.Brand href="/home" >
+
+          <img src={
+            logo
+          }
+            alt="Logo"
+            height="61px"
+            width="90" />
+        </Navbar.Brand>
+
+        <Nav className="mr-auto" >
+          <Nav.Link href="/home" > Home </Nav.Link>
+          <Nav.Link href="/category" > Categorias </Nav.Link>
+          <Nav.Link href="/books" > Mis libros </Nav.Link>
+        </Nav >
 
 
-  return ( 
-  
-  <div>
-    <Navbar bg = "light"
-    variant = "light" >
-    <Navbar.Brand href = "/home" >
+        <Form inline >
 
-    <img src = {
-      logo
-    }
-    alt = "Logo"
-    height = "61px"
-    width = "90" / >
-    </Navbar.Brand>
+          <Form.Control type="text"
+            placeholder="Busca un libro"
+            className="mr-sm-2"
+            onChange={
+              (e) => setTextQuery(e.target.value)
+            } />
 
-    <Nav className = "mr-auto" >
-    <Nav.Link href = "/home" > Home </Nav.Link> 
-    <Nav.Link href = "/category" > Categorias </Nav.Link> 
-    <Nav.Link href = "/books" > Mis libros </Nav.Link> </Nav > 
-    
-    
-      
-    <Form inline >
-     
-    <Form.Control type = "text"
-    placeholder = "Busca un libro"
-    className = "mr-sm-2"
-    onChange = {
-      (e) => setTextQuery(e.target.value)
-    }/> 
-    
-    <Button id ="buscarLibro" variant = "outline-primary" onClick = {
-      searchBooks
-    } > Search </Button>
+          <Button id="buscarLibro" variant="outline-primary" onClick={
+            searchBooks
+          } > Search </Button>
 
-   
-    </Form > 
+
+        </Form >
 
 
 
-    </Navbar>
+      </Navbar>
 
-{/*  
+      {/*  
     <div>
 
     <button onClick = {
@@ -114,47 +122,49 @@ if (user != null) {
     } > Insert User </button> 
     </div>
 */}
-    <div>
-   
+      <div>
 
-    <div style = {
-      {
-        display: "flex",
-        flexWrap: "wrap"
-      }
-    } > {
-      books.map((book, index) => {
-        return (
 
-          <div style = {
-            {
-              margin: 40,
-              width: 200
-            }
-          } >
-          <img style = {
-            {
-              width: 100,
-              height: 200
-            }
+        <div style={
+          {
+            display: "flex",
+            flexWrap: "wrap"
           }
-          src = {
-            book.imageLinks ? book.imageLinks.smallThumbnail : ""
-          }/> <p key = {
-            index
-          } > < b > {
-            book.title
-          } </b></p >
-          <p> {
-            book.subtitle
-          } </p> </div >
+        } > {
+            books.map((book, index) => {
+              return (
+
+                <div style={
+                  {
+                    margin: 40,
+                    width: 200
+                  }
+                } 
+                onClick={() => onBookSelected(book.id)}
+                >
+                  <img style={
+                    {
+                      width: 100,
+                      height: 200
+                    }
+                  }
+                    src={
+                      book.imageLinks ? book.imageLinks.smallThumbnail : ""
+                    } /> <p key={
+                      index
+                    } > < b > {
+                      book.title
+                    } </b></p >
+                  <p> {
+                    book.subtitle
+                  } </p> </div >
 
 
 
-        )
+              )
 
-      })
-    } </div> </div>
+            })
+          } </div> </div>
 
     </div>
   )

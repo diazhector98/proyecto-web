@@ -1,29 +1,87 @@
-import React, { useCallback } from 'react';
-import Button from 'react-bootstrap/Button';
-import Navbar from 'react-bootstrap/Navbar'
+
+import React, { useCallback, useEffect, useState } from 'react';
+import { Row, Col, Button, Navbar } from "react-bootstrap"
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import logo from '../pages/assets/logo1.png'
 import * as firebase from "firebase/app";
 import "firebase/auth";
+import app from "../base.js"
 
-const ProfilePage = () => {
 
-    firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-            console.log("SOmeone is up")
-        } else {
-            console.log("This should not happen")
+const ProfilePage = ({ history }) => {
+    var fname, lname, username, email, uid;
+    const [userInfo, setUserInfo] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        userId: "",
+    })
+
+    useEffect(() => {
+        app.auth().onAuthStateChanged((user) => {
+            console.log({user})
+            if (user != null) {
+                console.log({user})
+                const db = firebase.firestore()
+                username = user.displayName;
+                email = user.email;
+                uid = user.uid;
+                db.collection('users').doc(uid).get().then((info) => {
+                    console.log({info})
+                    fname = info.data().fname;
+                    lname = info.data().lname;
+                    console.log(fname, lname)
+                    setUserInfo({
+                        firstName: fname,
+                        lastName: lname,
+                        email,
+                        userId: uid
+                    })
+                })
+            }
+        })
+    }, [])
+
+    const LogOut = useCallback(async event => {
+        event.preventDefault();
+        try {
+            app.auth().signOut().then(() => {
+                console.log("User has left")
+            })
+
+            history.push("/");
+        } catch (error) {
+            alert(error);
         }
-    });
+    }, [history]);
 
-    var user = firebase.auth().currentUser;
-    var name, email, uid;
+    const Delete = useCallback(async event => {
+        event.preventDefault();
+        try {
+            app.auth().currentUser.delete().then(function () {
+                console.log("User deleted")
+            }).catch(function (error) {
+                // An error happened.
+            });
 
-    if (user != null) {
-        name = user.displayName;
-        email = user.email;
-        uid = user.uid;  
+            history.push("/");
+        } catch (error) {
+            alert(error);
+        }
+    }, [history]);
+
+
+    
+    function formatName() {
+        console.log(fname)
+        return userInfo.firstName + ' ' + userInfo.lastName;
+    }
+
+
+    const ProfileName = () => {
+
+        return React.createElement('div', null, formatName())
     }
 
     return (
@@ -45,21 +103,35 @@ const ProfilePage = () => {
                 </Form>
 
             </Navbar>
-            <div class="container">
+            <div className="container">
                 <h1>Profile</h1>
                 <form>
                     <div>
                         <label>
-                            {name}
+                            Name: <ProfileName />
                         </label>
                     </div>
                     <div>
-                            {email}
+                        <label>
+                            Email: {userInfo.email}
+                        </label>
                     </div>
                     <div>
-                        <Button type="submit">Log in</Button>
+                        <label>
+                            UserId: {userInfo.userId}
+                        </label>
                     </div>
                 </form>
+                <div>
+                    <Row>
+                        <Col>
+                            <Button type="LogOut" onClick={LogOut}>Log Out</Button>
+                        </Col>
+                        <Col>
+                            <Button type="Danger" onClick={Delete}>Delete Account</Button>
+                        </Col>
+                    </Row>
+                </div>
             </div>
         </div>
 

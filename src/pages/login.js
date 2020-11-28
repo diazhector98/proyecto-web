@@ -1,13 +1,12 @@
-import React, { useCallback, useContext } from 'react'
-import { withRouter, Redirect } from 'react-router-dom'
+import React, { useCallback} from 'react'
+import { withRouter} from 'react-router-dom'
 import app from "../base.js"
-import { AuthContext } from "../Auth.js"
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import logo from '../pages/assets/logo1.png'
-import stylesheet from '../pages/assets/useraccess.css'
+import '../pages/assets/useraccess.css'
 
 
 const Login = ({ history }) => {
@@ -48,28 +47,27 @@ const Login = ({ history }) => {
 
       </Navbar>
 
-      <div class="container">
+      <div className="container">
         <h1>Log in</h1>
-        <form onSubmit={handleLogin}>
-          <div>
-            <label>
-              Email
-                <input name="email" type="email" placeholder="Email" required />
-            </label>
-          </div>
-          <div>
-            <label>
-              Password
-                <input name="password" type="password" placeholder="Password" required />
-            </label>
 
-          </div>
-          <div>
-            <Button type="submit">Log in</Button>
-          </div>
+          <Form onSubmit={handleLogin}>
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control name="email" type="email" placeholder="Email" required />
+                        </Form.Group>
 
-        
-        </form>
+                        <Form.Group controlId="formBasicPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control name="password" type="password" placeholder="Password" required />
+                        </Form.Group>
+                        <Form.Group controlId="formBasicCheckbox">
+                            <Form.Check type="checkbox" label="Remember me" />
+                        </Form.Group>
+                        <Button variant="primary" type="submit">
+                            Submit
+                        </Button>
+                    </Form>
+
       </div>
 
     </div>
