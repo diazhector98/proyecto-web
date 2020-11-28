@@ -8,6 +8,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import app from "../base.js"
 import Mongo from '../utils/mongo'
+import BookList from '../components/book-list'
 
 
 const ProfilePage = ({ history }) => {
@@ -130,6 +131,13 @@ const ProfilePage = ({ history }) => {
                         </Col>
                     </Row>
                 </div>
+
+                {/* Libros Leyendo */}
+                <BookList title="Libros Leyendo" books={[]} />
+                {/* Libros Planeando Leer */}
+                <BookList title="Libros Planeando Leer" books={[]} />
+                {/* Libros Leidos */}
+                <BookList title="Libros Leidos" books={[]} />
             </div>
         </div>
 
