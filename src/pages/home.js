@@ -1,7 +1,7 @@
 import React from 'react'
 
 //Agregar el logo
-import logo from '../pages/assets/logo1.png'
+import logo from '../pages/assets/logo_web.png'
 
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
@@ -25,7 +25,7 @@ const homePage = () => {
           <Navbar bg="light" variant="light">
             <Navbar.Brand href="/home">
               {/* 71 y 100 */}
-            <img src={logo} alt="Logo" height = "61px" width = "90" />
+            <img src={logo} alt="Logo" height = "60px" width = "90" />
 
             </Navbar.Brand>
             <Nav className="mr-auto">

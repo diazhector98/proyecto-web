@@ -5,7 +5,7 @@ import Mongo from '../utils/mongo'
 import Library from '../utils/library'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import logo from '../pages/assets/logo1.png'
+import logo from '../pages/assets/logo_web.png'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import './gridStyles.css'
@@ -69,7 +69,7 @@ const CategoryPage = () => {
       logo
     }
     alt = "Logo"
-    height = "61px"
+    height = "60px"
     width = "90" / >
     </Navbar.Brand>
 
