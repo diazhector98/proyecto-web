@@ -8,8 +8,12 @@ import "firebase/auth";
 import app from "../base.js"
 import Mongo from '../utils/mongo'
 import BookList from '../components/book-list'
+import Card from 'react-bootstrap/Card'
 import UserNavBar from '../utils/updatedNavBar'
 
+const READING = 0
+const PLANNING = 1
+const READ = 2
 
 const ProfilePage = ({ history }) => {
     var fname, lname, username, email, uid;
@@ -22,6 +26,7 @@ const ProfilePage = ({ history }) => {
     const [readingNowBooks, setReadingNowBooks] = useState([])
     const [planningToReadBooks, setPlanningToReadBooks] = useState([])
     const [readBooks, setReadBooks] = useState([])
+    const [section, setSection] = useState(READING)
 
     const bookIdInBooks = (id, books) => {
         for(let i = 0; i < books.length; i++) {
@@ -137,43 +142,71 @@ const ProfilePage = ({ history }) => {
                 </Form>
 
             </Navbar>
-            <div className="container">
-                <h1>Profile</h1>
-                <form>
+            <Card style={{
+                display: 'flex',
+                flexDirection: 'row',
+                padding: 30
+            }}>
+                <Card style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    margin: 20,
+                    padding: 10
+                }}>
+                    <h1>Profile</h1>
+                    <form>
+                        <div>
+                            <label>
+                                Name: <ProfileName />
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                Email: {userInfo.email}
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                UserId: {userInfo.firebaseId}
+                            </label>
+                        </div>
+                    </form>
                     <div>
-                        <label>
-                            Name: <ProfileName />
-                        </label>
+                        <Row>
+                            <Col>
+                                <Button type="LogOut" onClick={LogOut}>Log Out</Button>
+                            </Col>
+                            <Col>
+                                <Button type="Danger" onClick={Delete}>Delete Account</Button>
+                            </Col>
+                        </Row>
                     </div>
-                    <div>
-                        <label>
-                            Email: {userInfo.email}
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            UserId: {userInfo.firebaseId}
-                        </label>
-                    </div>
-                </form>
+                </Card>
+
                 <div>
-                    <Row>
-                        <Col>
-                            <Button type="LogOut" onClick={LogOut}>Log Out</Button>
-                        </Col>
-                        <Col>
-                            <Button type="Danger" onClick={Delete}>Delete Account</Button>
-                        </Col>
-                    </Row>
+                    <div style={{
+                        display: 'flex',
+                    }}>
+                        <Button onClick={() => setSection(READING)}> Leyendo </Button>
+                        <Button onClick={() => setSection(PLANNING)}> Planeando Leer </Button>
+                        <Button onClick={() => setSection(READ)}> Leídos </Button>
+                    </div>
+
+                    {
+                        section == READING ?
+                        <BookList title="Libros Leyendo" books={readingNowBooks} /> :
+                        section == PLANNING ?
+                        <BookList title="Libros Planeando Leer" books={planningToReadBooks} /> :
+                        section == READ ?
+                        <BookList title="Libros Leidos" books={readBooks} /> :
+                        null
+                    }
                 </div>
 
-                {/* Libros Leyendo */}
-                <BookList title="Libros Leyendo" books={readingNowBooks} />
-                {/* Libros Planeando Leer */}
-                <BookList title="Libros Planeando Leer" books={planningToReadBooks} />
-                {/* Libros Leidos */}
-                <BookList title="Libros Leidos" books={readBooks} />
-            </div>
+
+                
+
+            </Card>
         </div>
 
     )
