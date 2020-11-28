@@ -28,6 +28,11 @@ const BookPage = ({ history }) => {
         const library = new Library()
         library.getBook({bookId}).then((result) => {
             console.log({result})
+            const postBookData = {
+                ...result.data,
+                bookId: result.data.id
+            }
+            library.postBook(postBookData)
             setBookInfo(result.data)
         }).catch((e) => {
             console.log({e})

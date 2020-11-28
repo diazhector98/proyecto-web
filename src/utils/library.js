@@ -16,6 +16,11 @@ class Library {
         }})
         return result
     }
+
+    postBook = async (book) => {
+        const result = await axios.post(`${DATABASE_PATH}book`, null, {params: book})
+        return result
+    }
 }
 
 export default Library
