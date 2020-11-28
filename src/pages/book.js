@@ -30,9 +30,13 @@ const BookPage = ({ history }) => {
             console.log({result})
             const postBookData = {
                 ...result.data,
-                bookId: result.data.id
+                bookId: result.data.id,
+                imageLink: result.data.imageLinks ? result.data.imageLinks.thumbnail : null
             }
-            library.postBook(postBookData)
+            console.log({postBookData})
+            library.postBook(postBookData).then((res) => {
+                console.log({res})
+            })
             setBookInfo(result.data)
         }).catch((e) => {
             console.log({e})
