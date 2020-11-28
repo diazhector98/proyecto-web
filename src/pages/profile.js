@@ -73,7 +73,6 @@ const ProfilePage = ({ history }) => {
 
     
     function formatName() {
-        console.log(fname)
         return userInfo.name;
     }
 
@@ -133,11 +132,11 @@ const ProfilePage = ({ history }) => {
                 </div>
 
                 {/* Libros Leyendo */}
-                <BookList title="Libros Leyendo" books={[]} />
+                <BookList title="Libros Leyendo" books={userBooks} />
                 {/* Libros Planeando Leer */}
-                <BookList title="Libros Planeando Leer" books={[]} />
+                <BookList title="Libros Planeando Leer" books={userBooks} />
                 {/* Libros Leidos */}
-                <BookList title="Libros Leidos" books={[]} />
+                <BookList title="Libros Leidos" books={userBooks} />
             </div>
         </div>
 

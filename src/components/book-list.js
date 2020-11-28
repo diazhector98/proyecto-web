@@ -4,10 +4,10 @@ const BookList = ({title, books}) => {
     return (
         <div>
             <h1>{title}</h1>
-            {books ? books.forEach(book => {
+            {books ? books.map(book => {
                 return (
                     <div>
-                        {book.title}
+                        <p>{book.title}</p>
                     </div>
                 )
             }) : null}
