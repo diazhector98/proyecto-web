@@ -25,7 +25,7 @@ const homePage = () => {
           <Navbar bg="light" variant="light">
             <Navbar.Brand href="/home">
               {/* 71 y 100 */}
-            <img src={logo} alt="Logo" height = "61px" width = "90" />
+            <img src={logo} alt="Logo" height = "60px" width = "90" />
 
             </Navbar.Brand>
             <Nav className="mr-auto">
