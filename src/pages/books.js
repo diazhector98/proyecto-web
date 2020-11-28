@@ -10,28 +10,22 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import firebase from "../base.js"
 
-const BooksPage = ({history}) => {
+const BooksPage = ({ history }) => {
 
   let [textQuery, setTextQuery] = useState("")
   let [books, setBooks] = useState([])
 
-  var user = firebase.auth().currentUser;
-  if (user) {
-    console.log("HI")
-    const Navbar1 = () => (
-      <Nav.Link href = "/profile" key = {3}> Profile </Nav.Link>
-    )
-    const NavBar2 = () => (
-      <Button variant="light" key = {4}>Log Out</Button>
-    )
-  } else {
-    console.log("IH")
-    const Navbar1 = () => (
-      <Nav.Link href = "/login" key = {0}> Log In </Nav.Link> 
-    )
-    const NavBar2 = () => (
-      <Nav.Link href = "/signup" key = {2}> Sign Up </Nav.Link> 
-    )
+  const NavBarStatus = ({ }) => {
+    var user = firebase.auth().currentUser;
+    if (user) {
+      return [<Nav.Link href="/profile" key={3}> Profile </Nav.Link>,
+      <Button variant="light" key={4}>Log Out</Button>]
+    }
+    else {
+
+      return [<Nav.Link href="/login" key={0}> Log In </Nav.Link>,
+      <Nav.Link href="/signup" key={2}> Sign Up </Nav.Link>]
+    }
   }
 
   const onBookSelected = (bookId) => {
@@ -96,6 +90,7 @@ const BooksPage = ({history}) => {
 
         <Form inline >
 
+          <NavBarStatus />
           <Form.Control type="text"
             placeholder="Busca un libro"
             className="mr-sm-2"
@@ -139,8 +134,8 @@ const BooksPage = ({history}) => {
                     margin: 40,
                     width: 200
                   }
-                } 
-                onClick={() => onBookSelected(book.id)}
+                }
+                  onClick={() => onBookSelected(book.id)}
                 >
                   <img style={
                     {
