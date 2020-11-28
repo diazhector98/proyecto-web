@@ -88,8 +88,6 @@ const BooksPage = ({history}) => {
         </Navbar.Brand>
 
         <Nav className="mr-auto" >
-          <Nav.Link href="/home" > Home </Nav.Link>
-          <Nav.Link href="/category" > Categorias </Nav.Link>
           <Nav.Link href="/books" > Mis libros </Nav.Link>
         </Nav >
 

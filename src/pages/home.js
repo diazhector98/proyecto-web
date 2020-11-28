@@ -29,9 +29,8 @@ const homePage = () => {
 
             </Navbar.Brand>
             <Nav className="mr-auto">
-              <Nav.Link href="/home" class = "loggedIN" >Home</Nav.Link>
-              <Nav.Link href="/category">Categorias</Nav.Link>
-              <Nav.Link href="/books">Mis libros</Nav.Link>
+              <Nav.Link href="/books" class = "loggedIN" >Libros</Nav.Link>
+
             </Nav>
             <DataSearch
               componentId="mainSearch"
