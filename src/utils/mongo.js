@@ -3,9 +3,16 @@ import axios from 'axios'
 const DATABASE_PATH = 'https://librostec.herokuapp.com/'
 
 class Mongo {
+
+    getUser = async ({firebaseId}) => {
+        const result = await axios.get(`${DATABASE_PATH}user`, {params: {
+            firebaseId
+        }})
+
+        return result
+    }
+
     insertUser = async ({firebaseId, name, email}) => {
-        console.log({firebaseId, name, email})
-        
         const result = await axios.post(DATABASE_PATH + "user/", null, {params: {
             firebaseId,
             name,

@@ -7,37 +7,28 @@ import logo from '../pages/assets/logo1.png'
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import app from "../base.js"
+import Mongo from '../utils/mongo'
 
 
 const ProfilePage = ({ history }) => {
     var fname, lname, username, email, uid;
     const [userInfo, setUserInfo] = useState({
-        firstName: "",
-        lastName: "",
+        name: "",
         email: "",
-        userId: "",
+        firebaseId: "",
     })
 
     useEffect(() => {
         app.auth().onAuthStateChanged((user) => {
             console.log({user})
             if (user != null) {
-                console.log({user})
-                const db = firebase.firestore()
-                username = user.displayName;
-                email = user.email;
                 uid = user.uid;
-                db.collection('users').doc(uid).get().then((info) => {
-                    console.log({info})
-                    fname = info.data().fname;
-                    lname = info.data().lname;
-                    console.log(fname, lname)
-                    setUserInfo({
-                        firstName: fname,
-                        lastName: lname,
-                        email,
-                        userId: uid
-                    })
+                const mongo = new Mongo()
+                mongo.getUser({
+                    firebaseId: uid
+                }).then((result) => {
+                    console.log({result})
+                    setUserInfo(result.data)
                 })
             }
         })
@@ -75,7 +66,7 @@ const ProfilePage = ({ history }) => {
     
     function formatName() {
         console.log(fname)
-        return userInfo.firstName + ' ' + userInfo.lastName;
+        return userInfo.name;
     }
 
 
@@ -118,7 +109,7 @@ const ProfilePage = ({ history }) => {
                     </div>
                     <div>
                         <label>
-                            UserId: {userInfo.userId}
+                            UserId: {userInfo.firebaseId}
                         </label>
                     </div>
                 </form>
