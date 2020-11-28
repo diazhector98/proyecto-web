@@ -1,4 +1,5 @@
 import React from 'react'
+import Card from 'react-bootstrap/Card'
 
 
 const containerStyles = {
@@ -20,14 +21,14 @@ const bookDetailsContainerStyles = {
 const UserBook = ({book}) => {
     const {title, authors, imageLink} = book
     return (
-        <div style={containerStyles}>
+        <Card style={containerStyles}>
             <img src={imageLink}/>
             <div style={bookDetailsContainerStyles}>
                 <h3>{title}</h3>
                 <h4>{authors.join(',')}</h4>
             </div>
             
-        </div>
+        </Card>
     )
 }
 
