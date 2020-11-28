@@ -14,6 +14,10 @@ const BookPage = ({ history }) => {
     const [bookInfo, setBookInfo] = useState({
         id: "",
         title: "",
+        authors: [],
+        categories: [],
+        averageRating: null,
+        imageLinks: {},
         publishedDate: "",
     })
     const [userInfo, setUserInfo] = useState({
@@ -23,6 +27,7 @@ const BookPage = ({ history }) => {
     useEffect(() => {
         const library = new Library()
         library.getBook({bookId}).then((result) => {
+            console.log({result})
             setBookInfo(result.data)
         }).catch((e) => {
             console.log({e})
@@ -57,9 +62,11 @@ const BookPage = ({ history }) => {
 
     return (
         <div>
+            <img src={bookInfo.imageLinks.thumbnail}/>
             <p>Id: {bookInfo.id}</p>
             <p>Title: {bookInfo.title}</p>
             <p>Published Date: {bookInfo.publishedDate}</p>
+            <p>Average Rating: {bookInfo.averageRating}</p>
             <Button onClick={onReadingNowClicked}>Leyendo Ahora</Button>
             <Button onClick={onPlannningToReadClicked}>Planeo Leer</Button>
         </div>
