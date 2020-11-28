@@ -39,6 +39,7 @@ const ProfilePage = ({ history }) => {
             if (user != null) {
                 uid = user.uid;
                 const mongo = new Mongo()
+                console.log({uid})
                 mongo.getUser({
                     firebaseId: uid
                 }).then((result) => {
@@ -47,6 +48,10 @@ const ProfilePage = ({ history }) => {
                     mongo.getUserBooks({
                         firebaseId: uid
                     }).then((result) => {
+                        console.log({result})
+                        if (result.data === "Error") {
+                            return
+                        }
                         setUserBooks(result.data)
 
                         const books = result.data
