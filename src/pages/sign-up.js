@@ -25,7 +25,7 @@ const SignUpPage = ({ history }) => {
                     var user = firebase.auth().currentUser;
                     var fname = first_name.value
                     var lname = last_name.value
-                    console.log({user});
+                    console.log({ user });
 
                     const mongo = new Mongo();
                     mongo.insertUser({
@@ -33,41 +33,58 @@ const SignUpPage = ({ history }) => {
                         name: fname + " " + lname,
                         email: email.value
                     })
-                    
+
                     const db = firebase.firestore();
                     db
-                      .collection("users")
-                      .doc(user.uid)
-                      .set({ fname, lname});
+                        .collection("users")
+                        .doc(user.uid)
+                        .set({ fname, lname });
                     history.push("/profile");
-                  })
-                  .catch((error) => console.error("Error: ", error));
+                })
+                .catch((error) => console.error("Error: ", error));
         } catch (error) {
             alert(error);
         }
     }, [history]);
 
+    const NavBarStatus = ({ }) => {
+        var user = firebase.auth().currentUser;
+        if (user) {
+            console.log("User is here")
+            return [<Nav.Link href="/profile" key={3}> Profile </Nav.Link>,
+            <Button variant="light" key={4}>Log Out</Button>]
+        }
+        else {
+            console.log("User is not here")
+            return [<Nav.Link href="/login" key={0}> Log In </Nav.Link>,
+            <Nav.Link href="/signup" key={2}> Sign Up </Nav.Link>]
+        }
+    }
+    
     return (
-        
+
 
         <div className="restof">
             <div>
-                <Navbar bg="light" variant="light">
-                    <Navbar.Brand href="/home">
-                        {/* 71 y 100 */}
-                        <img src={logo} alt="Logo" height="61px" width="90" />
-
+                <Navbar bg="light" variant="light" >
+                    <Navbar.Brand href="/home" >
+                        <img src={logo} alt="Logo" height="60px" width="90" />
                     </Navbar.Brand>
-                    <Nav className="mr-auto">
-                        <Nav.Link href="/home">Home</Nav.Link>
-                        <Nav.Link href="/category">Categorias</Nav.Link>
-                        <Nav.Link href="/books">Mis libros</Nav.Link>
-                    </Nav>
-                    <Form inline>
-                        <Form.Control type="text" placeholder="Busca un libro" className="mr-sm-2" />
-                        <Button variant="outline-primary">Buscar</Button>
-                    </Form>
 
+                    <Nav className="mr-auto" >
+                        <Nav.Link href="/books" > Mis libros </Nav.Link>
+                    </Nav >
+
+                    <Form inline >
+                        <NavBarStatus />
+                        <Form.Control type="text"
+                            placeholder="Busca un libro"
+                            className="mr-sm-2"
+                            onChange={
+                                (e) => setTextQuery(e.target.value)
+                            } />
+                        <Button id="buscarLibro" variant="outline-primary" onClick={searchBooks} > Search </Button>
+                    </Form >
                 </Navbar>
                 <div className="container">
                     <h1>Sign Up</h1>
