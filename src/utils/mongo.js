@@ -34,6 +34,15 @@ class Mongo {
         return result
     }
 
+    addPlanningToReadBook = async ({bookId, firebaseId}) => {
+        const result = await axios.post(`${DATABASE_PATH}planningToRead/`, null, {params: {
+            firebaseId,
+            bookId
+        }})
+
+        return result
+    }
+
 }
 
 export default Mongo

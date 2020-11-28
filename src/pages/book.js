@@ -62,7 +62,15 @@ const BookPage = ({ history }) => {
     }
 
     const onPlannningToReadClicked = () => {
-
+        const mongo = new Mongo()
+        console.log({bookInfo, userInfo})
+        mongo.addPlanningToReadBook({
+            firebaseId: userInfo.userId, 
+            bookId: bookInfo.id
+        }).then((result) => {
+            console.log({result})
+            alert("Libro agregado a Libros Planeando Leer")
+        })
     }
 
     return (
