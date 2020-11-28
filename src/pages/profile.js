@@ -3,32 +3,42 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Row, Col, Button, Navbar } from "react-bootstrap"
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
-import logo from '../pages/assets/logo_web.png'
+import logo from '../pages/assets/logo1.png'
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import app from "../base.js"
+import Mongo from '../utils/mongo'
+import BookList from '../components/book-list'
 
 
 const ProfilePage = ({ history }) => {
     var fname, lname, username, email, uid;
     const [userInfo, setUserInfo] = useState({
-        firstName: "",
-        lastName: "",
+        name: "",
         email: "",
-        userId: "",
+        firebaseId: "",
     })
+    const [userBooks, setUserBooks] = useState([])
+    const [readingNowBooks, setReadingNowBooks] = useState([])
+    const [planningToReadBooks, setPlanningToReadBooks] = useState([])
+    const [readBooks, setReadBooks] = useState([])
+
+    const bookIdInBooks = (id, books) => {
+        for(let i = 0; i < books.length; i++) {
+            const book = books[i]
+            const {bookId} = book
+            if (id === bookId) {
+                return true
+            }
+        }
+        return false
+    }
 
     useEffect(() => {
         app.auth().onAuthStateChanged((user) => {
-            console.log({user})
             if (user != null) {
-                console.log({user})
-                const db = firebase.firestore()
-                username = user.displayName;
-                email = user.email;
                 uid = user.uid;
                 const mongo = new Mongo()
-                console.log({uid})
                 mongo.getUser({
                     firebaseId: uid
                 }).then((result) => {
@@ -37,11 +47,12 @@ const ProfilePage = ({ history }) => {
                     mongo.getUserBooks({
                         firebaseId: uid
                     }).then((result) => {
-                        console.log({result})
-                        if (result.data === "Error") {
+                        
+                        if(result.data === "Error") {
                             return
                         }
                         setUserBooks(result.data)
+
 
                         const books = result.data
                         let readingBooks = []
@@ -98,8 +109,7 @@ const ProfilePage = ({ history }) => {
 
     
     function formatName() {
-        console.log(fname)
-        return userInfo.firstName + ' ' + userInfo.lastName;
+        return userInfo.name;
     }
 
 
@@ -117,8 +127,14 @@ const ProfilePage = ({ history }) => {
 
                 </Navbar.Brand>
                 <Nav className="mr-auto">
+                    <Nav.Link href="/home">Home</Nav.Link>
                     <Nav.Link href="/category">Categorias</Nav.Link>
+                    <Nav.Link href="/books">Mis libros</Nav.Link>
                 </Nav>
+                <Form inline>
+                    <Form.Control type="text" placeholder="Busca un libro" className="mr-sm-2" />
+                    <Button variant="outline-primary">Buscar</Button>
+                </Form>
 
             </Navbar>
             <div className="container">
@@ -136,7 +152,7 @@ const ProfilePage = ({ history }) => {
                     </div>
                     <div>
                         <label>
-                            UserId: {userInfo.userId}
+                            UserId: {userInfo.firebaseId}
                         </label>
                     </div>
                 </form>
@@ -150,6 +166,13 @@ const ProfilePage = ({ history }) => {
                         </Col>
                     </Row>
                 </div>
+
+                {/* Libros Leyendo */}
+                <BookList title="Libros Leyendo" books={readingNowBooks} />
+                {/* Libros Planeando Leer */}
+                <BookList title="Libros Planeando Leer" books={planningToReadBooks} />
+                {/* Libros Leidos */}
+                <BookList title="Libros Leidos" books={readBooks} />
             </div>
         </div>
 
