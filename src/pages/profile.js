@@ -4,12 +4,12 @@ import { Row, Col, Button, Navbar } from "react-bootstrap"
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import logo from '../pages/assets/logo1.png'
-import * as firebase from "firebase/app";
 import "firebase/auth";
 import app from "../base.js"
 import Mongo from '../utils/mongo'
 import BookList from '../components/book-list'
 import Card from 'react-bootstrap/Card'
+import UserNavBar from '../utils/updatedNavBar'
 
 const READING = 0
 const PLANNING = 1
@@ -38,7 +38,7 @@ const ProfilePage = ({ history }) => {
         }
         return false
     }
-
+  
     useEffect(() => {
         app.auth().onAuthStateChanged((user) => {
             if (user != null) {
