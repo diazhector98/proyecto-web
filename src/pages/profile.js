@@ -59,8 +59,13 @@ const ProfilePage = ({ history }) => {
                             if (userData.planningToRead && bookIdInBooks(bookId, userData.planningToRead)) {
                                 planningBooks.push(book)
                             }
+
+                            if (userData.readingNow && bookIdInBooks(bookId, userData.readingNow)) {
+                                readingBooks.push(book)
+                            }
                         })
                         setPlanningToReadBooks(planningBooks)
+                        setReadingNowBooks(readingBooks)
 
                     })
                 })
