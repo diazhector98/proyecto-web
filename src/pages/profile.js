@@ -47,7 +47,12 @@ const ProfilePage = ({ history }) => {
                     mongo.getUserBooks({
                         firebaseId: uid
                     }).then((result) => {
+                        
+                        if(result.data === "Error") {
+                            return
+                        }
                         setUserBooks(result.data)
+
 
                         const books = result.data
                         let readingBooks = []
