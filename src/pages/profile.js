@@ -19,24 +19,50 @@ const ProfilePage = ({ history }) => {
         firebaseId: "",
     })
     const [userBooks, setUserBooks] = useState([])
+    const [readingNowBooks, setReadingNowBooks] = useState([])
+    const [planningToReadBooks, setPlanningToReadBooks] = useState([])
+    const [readBooks, setReadBooks] = useState([])
+
+    const bookIdInBooks = (id, books) => {
+        for(let i = 0; i < books.length; i++) {
+            const book = books[i]
+            const {bookId} = book
+            if (id === bookId) {
+                return true
+            }
+        }
+        return false
+    }
 
     useEffect(() => {
         app.auth().onAuthStateChanged((user) => {
-            console.log({user})
             if (user != null) {
                 uid = user.uid;
                 const mongo = new Mongo()
                 mongo.getUser({
                     firebaseId: uid
                 }).then((result) => {
-                    setUserInfo(result.data)
-                })
+                    const userData = result.data
+                    setUserInfo(userData)
+                    mongo.getUserBooks({
+                        firebaseId: uid
+                    }).then((result) => {
+                        setUserBooks(result.data)
 
-                mongo.getUserBooks({
-                    firebaseId: uid
-                }).then((result) => {
-                    console.log({result})
-                    setUserBooks(result.data)
+                        const books = result.data
+                        let readingBooks = []
+                        let planningBooks = []
+                        let readBooks = []
+
+                        books.forEach(book => {
+                            const {bookId} = book
+                            if (userData.planningToRead && bookIdInBooks(bookId, userData.planningToRead)) {
+                                planningBooks.push(book)
+                            }
+                        })
+                        setPlanningToReadBooks(planningBooks)
+
+                    })
                 })
             }
         })
@@ -132,11 +158,11 @@ const ProfilePage = ({ history }) => {
                 </div>
 
                 {/* Libros Leyendo */}
-                <BookList title="Libros Leyendo" books={userBooks} />
+                <BookList title="Libros Leyendo" books={readingNowBooks} />
                 {/* Libros Planeando Leer */}
-                <BookList title="Libros Planeando Leer" books={userBooks} />
+                <BookList title="Libros Planeando Leer" books={planningToReadBooks} />
                 {/* Libros Leidos */}
-                <BookList title="Libros Leidos" books={userBooks} />
+                <BookList title="Libros Leidos" books={readBooks} />
             </div>
         </div>
 
