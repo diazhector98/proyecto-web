@@ -16,6 +16,8 @@ import {
 const BookPage = ({ history }) => {
     let { bookId } = useParams();
     const [date, onDateChanged] = useState(new Date())
+    const [currentPage, setCurrentPage] = useState(undefined)
+    const [totalPages, setTotalPages] = useState(undefined)
     const [modalShow, setModalShow] = useState(false)
     const [bookInfo, setBookInfo] = useState({
         id: "",
@@ -61,10 +63,12 @@ const BookPage = ({ history }) => {
 
     const onReadingNowClicked = () => {
         const mongo = new Mongo()
-        console.log({bookInfo, userInfo})
         mongo.addReadingNowBook({
             firebaseId: userInfo.userId, 
-            bookId: bookInfo.id
+            bookId: bookInfo.id,
+            currentPage,
+            totalPages,
+            dateStarted: date.toISOString()
         }).then((result) => {
             console.log({result})
             alert("Libro agregado a Libros Leyendo")
@@ -103,12 +107,18 @@ const BookPage = ({ history }) => {
                     <Form onSubmit={onReadingNowClicked}>
                         <Form.Group controlId="formBasicEmail">
                             <Form.Label>Página Actual</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email" />
+                            <Form.Control 
+                                placeholder="Introduce la página en donde vas" 
+                                onChange={(e) => setCurrentPage(parseInt(e.target.value))}
+                            />
                         </Form.Group>
 
                         <Form.Group controlId="formBasicPassword">
                             <Form.Label>Total De Páginas</Form.Label>
-                            <Form.Control type="password" placeholder="Password" />
+                            <Form.Control 
+                                placeholder="Introduce el total de páginas" 
+                                onChange={(e) => setTotalPages(parseInt(e.target.value))}
+                            />
                         </Form.Group>
                         <Form.Label>¿Cuando empezaste a leerlo?</Form.Label>
                         <Calendar

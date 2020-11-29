@@ -25,10 +25,10 @@ class Mongo {
         return result
     }
 
-    addReadingNowBook = async ({bookId, firebaseId}) => {
+    addReadingNowBook = async ({bookId, firebaseId, currentPage, totalPages, dateStarted}) => {
         const result = await axios.post(`${DATABASE_PATH}readingNow/`, null, {params: {
             firebaseId,
-            bookId
+            bookId, currentPage, totalPages, dateStarted
         }})
 
         return result
