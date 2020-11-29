@@ -1,7 +1,13 @@
 import React from 'react'
 import UserBook from './user-book'
 
-const BookList = ({title, books, onUpdateBookCurrentPage, showProgress}) => {
+const BookList = ({
+    title, 
+    books, 
+    onUpdateBookCurrentPage, 
+    showProgress,
+    onFinishBookClicked
+}) => {
     return (
         <div>
             <h1>{title}</h1>
@@ -13,6 +19,7 @@ const BookList = ({title, books, onUpdateBookCurrentPage, showProgress}) => {
                     book={book} 
                     onUpdateBookCurrentPage={onUpdateBookCurrentPage}
                     showProgress={showProgress}
+                    onFinishBookClicked={onFinishBookClicked}
                 />)
             }) : null}
         </div>

@@ -138,6 +138,9 @@ const ProfilePage = ({ history }) => {
         }
     }, [history]);
 
+    const onFinishBookClicked = (bookId) => {
+        console.log({bookId})
+    }
 
     
     function formatName() {
@@ -221,7 +224,13 @@ const ProfilePage = ({ history }) => {
 
                     {
                         section == READING ?
-                        <BookList showProgress={true} title="Libros Leyendo" books={readingNowBooks} onUpdateBookCurrentPage={onUpdateBookCurrentPage}/> :
+                        <BookList 
+                            showProgress={true} 
+                            title="Libros Leyendo" 
+                            books={readingNowBooks} 
+                            onUpdateBookCurrentPage={onUpdateBookCurrentPage}
+                            onFinishBookClicked={onFinishBookClicked}
+                            /> :
                         section == PLANNING ?
                         <BookList title="Libros Planeando Leer" books={planningToReadBooks} /> :
                         section == READ ?

@@ -26,7 +26,14 @@ const pageButtonsStyles = {
 }
 
 
-const UserBook = ({book, onUpdateBookCurrentPage, showProgress}) => {
+const UserBook = (
+    {
+        book, 
+        onUpdateBookCurrentPage, 
+        showProgress,
+        onFinishBookClicked
+    }
+) => {
     const {
         bookId,
         title, 
@@ -63,6 +70,10 @@ const UserBook = ({book, onUpdateBookCurrentPage, showProgress}) => {
         setSaveButtonEnabled(false)
     } 
 
+    const onFinishClicked = () => {
+        onFinishBookClicked(bookId)
+    }
+
     return (
         <Card style={containerStyles}>
             <img src={imageLink}/>
@@ -86,7 +97,7 @@ const UserBook = ({book, onUpdateBookCurrentPage, showProgress}) => {
                         </div>
                         
                         <Line percent={(currentPage / totalPages * 100).toString()} strokeWidth="4" strokeColor="#2db7f5" />
-                        
+                        <Button onClick={onFinishClicked}> Terminar </Button>
 
                     </div> :
                     null
