@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import { Col, Form } from "react-bootstrap"
-import logo from '../pages/assets/logo1.png'
+import logo from '../pages/assets/logo_web.png'
 import * as firebase from "firebase/app";
 import Mongo from '../utils/mongo'
 
@@ -55,7 +55,7 @@ const SignUpPage = ({ history }) => {
                 <Navbar bg="light" variant="light">
                     <Navbar.Brand href="/home">
                         {/* 71 y 100 */}
-                        <img src={logo} alt="Logo" height="61px" width="90" />
+                        <img src={logo} alt="Logo" height="60px" width="90" />
 
                     </Navbar.Brand>
                     <Nav className="mr-auto">
