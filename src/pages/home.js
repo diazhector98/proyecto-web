@@ -2,7 +2,7 @@ import React from 'react'
 
 //Agregar el logo
 import logo from '../pages/assets/logo_web.png'
-
+import * as firebase from "firebase/app";
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
@@ -20,7 +20,22 @@ import {
 
 
 const homePage = () => {
-    return (
+  const NavBarStatus = ({}) => {
+    var user = firebase.auth().currentUser;
+    if (user){
+      console.log("User is here")
+      return [<Nav.Link href="/profile" key={3}> Profile </Nav.Link>,
+      <Button variant="light" key={4}>Log Out</Button>]
+    }
+    else{
+      console.log("User is not here")
+      return     [<Nav.Link href="/login" key={0}> Log In </Nav.Link>,
+      <Nav.Link href="/signup" key={2}> Sign Up </Nav.Link>]
+    }
+}  
+  
+  return (
+      
         <div>
           <Navbar bg="light" variant="light">
             <Navbar.Brand href="/home">
@@ -32,6 +47,7 @@ const homePage = () => {
               <Nav.Link href="/books" class = "loggedIN" >Libros</Nav.Link>
 
             </Nav>
+            <NavBarStatus/>
             <DataSearch
               componentId="mainSearch"
               dataField={["original_title", "original_title.search", "authors", "authors.search"]}
