@@ -38,6 +38,17 @@ const ProfilePage = ({ history }) => {
         }
         return false
     }
+
+    const getUserBookInfo = (id, books) => {
+        for(let i = 0; i < books.length; i++) {
+            const book = books[i]
+            const {bookId} = book
+            if (id === bookId) {
+                return book
+            }
+        }
+        return null
+    }
   
     useEffect(() => {
         app.auth().onAuthStateChanged((user) => {
@@ -71,7 +82,11 @@ const ProfilePage = ({ history }) => {
                             }
 
                             if (userData.readingNow && bookIdInBooks(bookId, userData.readingNow)) {
-                                readingBooks.push(book)
+                                let userBook = getUserBookInfo(bookId, userData.readingNow)
+                                readingBooks.push({
+                                    ...userBook,
+                                    ...book
+                                })
                             }
                         })
                         setPlanningToReadBooks(planningBooks)
