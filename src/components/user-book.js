@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Card from 'react-bootstrap/Card'
 import ProgressBar from 'react-bootstrap/ProgressBar'
 import { Line, Circle } from 'rc-progress';
+import Button from 'react-bootstrap/Button'
 
 const containerStyles = {
     display: 'flex',
@@ -19,15 +20,37 @@ const bookDetailsContainerStyles = {
     width: '100%'
 }
 
+const pageButtonsStyles = {
+    marginLeft: 5,
+    marginRight: 5,
+}
+
 
 const UserBook = ({book}) => {
     const {
         title, 
         authors, 
         imageLink,
-        currentPage,
-        totalPages
     } = book
+
+    const [currentPage, setCurrentPage] = useState(null)
+    const [totalPages, setTotalPages] = useState(null)
+    const [saveButtonEnabled, setSaveButtonEnabled] = useState(false)
+
+    useEffect(() => {
+        if (book.currentPage && book.totalPages) {
+            setCurrentPage(book.currentPage)
+            setTotalPages(book.totalPages)
+        }
+    }, [])
+
+    const changeCurrentPage = (newCurrentPage) => {
+        if (newCurrentPage > 0 && newCurrentPage < totalPages) {
+            setCurrentPage(newCurrentPage)
+            setSaveButtonEnabled(true)
+        }
+    }
+
 
     console.log({book})
     return (
@@ -39,8 +62,22 @@ const UserBook = ({book}) => {
                 {
                     currentPage && totalPages ?
                     <div style={{width: '100%'}}>
-                        <p> {currentPage} / {totalPages} - {(currentPage / totalPages * 100).toString()} %</p>
+                        <div style={{display: 'flex', justifyItems: 'center'}}>
+                            <p> {currentPage} / {totalPages} - {Math.round(currentPage / totalPages * 100).toString()} %</p>
+                            <Button style={pageButtonsStyles} variant="light" onClick={() => changeCurrentPage(currentPage - 1)}> - </Button>
+                            <Button style={pageButtonsStyles} variant="light" onClick={() => changeCurrentPage(currentPage + 1)}> + </Button>
+
+                            {
+                                saveButtonEnabled ? 
+                                <Button style={pageButtonsStyles}  variant="light">Guardar</Button> :
+                                null
+                            
+                            }
+                        </div>
+                        
                         <Line percent={(currentPage / totalPages * 100).toString()} strokeWidth="4" strokeColor="#2db7f5" />
+                        
+
                     </div> :
                     null
                     
