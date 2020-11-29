@@ -221,7 +221,7 @@ const ProfilePage = ({ history }) => {
 
                     {
                         section == READING ?
-                        <BookList title="Libros Leyendo" books={readingNowBooks} onUpdateBookCurrentPage={onUpdateBookCurrentPage}/> :
+                        <BookList showProgress={true} title="Libros Leyendo" books={readingNowBooks} onUpdateBookCurrentPage={onUpdateBookCurrentPage}/> :
                         section == PLANNING ?
                         <BookList title="Libros Planeando Leer" books={planningToReadBooks} /> :
                         section == READ ?

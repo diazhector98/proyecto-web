@@ -26,7 +26,7 @@ const pageButtonsStyles = {
 }
 
 
-const UserBook = ({book, onUpdateBookCurrentPage}) => {
+const UserBook = ({book, onUpdateBookCurrentPage, showProgress}) => {
     const {
         bookId,
         title, 
@@ -39,9 +39,13 @@ const UserBook = ({book, onUpdateBookCurrentPage}) => {
     const [saveButtonEnabled, setSaveButtonEnabled] = useState(false)
 
     useEffect(() => {
+        console.log({book})
         if (book.currentPage && book.totalPages) {
             setCurrentPage(book.currentPage)
             setTotalPages(book.totalPages)
+        } else {
+            setCurrentPage(null)
+            setTotalPages(null)
         }
     }, [])
 
@@ -49,6 +53,8 @@ const UserBook = ({book, onUpdateBookCurrentPage}) => {
         if (newCurrentPage > 0 && newCurrentPage < totalPages) {
             setCurrentPage(newCurrentPage)
             setSaveButtonEnabled(true)
+        } else if (newCurrentPage == totalPages) {
+
         }
     }
 
@@ -64,7 +70,7 @@ const UserBook = ({book, onUpdateBookCurrentPage}) => {
                 <h3>{title}</h3>
                 <h4>{authors.join(',')}</h4>
                 {
-                    currentPage && totalPages ?
+                    showProgress && currentPage !== null && totalPages !== null ?
                     <div style={{width: '100%'}}>
                         <div style={{display: 'flex', justifyItems: 'center'}}>
                             <p> {currentPage} / {totalPages} - {Math.round(currentPage / totalPages * 100).toString()} %</p>
