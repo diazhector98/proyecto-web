@@ -49,6 +49,18 @@ const ProfilePage = ({ history }) => {
         }
         return null
     }
+
+    const onUpdateBookCurrentPage = (bookId, currentPage) => {
+        console.log("updating book")
+        const mongo = new Mongo()
+        mongo.updateBookCurrentPage({
+            bookId,
+            currentPage,
+            firebaseId: userInfo.firebaseId
+        }).then((result) => {
+            console.log({result})
+        })
+    }
   
     useEffect(() => {
         app.auth().onAuthStateChanged((user) => {
@@ -209,7 +221,7 @@ const ProfilePage = ({ history }) => {
 
                     {
                         section == READING ?
-                        <BookList title="Libros Leyendo" books={readingNowBooks} /> :
+                        <BookList title="Libros Leyendo" books={readingNowBooks} onUpdateBookCurrentPage={onUpdateBookCurrentPage}/> :
                         section == PLANNING ?
                         <BookList title="Libros Planeando Leer" books={planningToReadBooks} /> :
                         section == READ ?

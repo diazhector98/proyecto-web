@@ -43,6 +43,19 @@ class Mongo {
         return result
     }
 
+    updateBookCurrentPage = async ({bookId, firebaseId, currentPage}) => {
+        console.log({bookId, firebaseId, currentPage})
+        const result = await axios.post(`${DATABASE_PATH}user/book/updateCurrentPage/`, null, {
+            params: {
+                bookId, 
+                firebaseId, 
+                currentPage
+            }}
+        )
+        console.log({result})
+        return result;
+    }
+
 }
 
 export default Mongo

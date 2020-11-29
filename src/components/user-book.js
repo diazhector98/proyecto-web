@@ -26,8 +26,9 @@ const pageButtonsStyles = {
 }
 
 
-const UserBook = ({book}) => {
+const UserBook = ({book, onUpdateBookCurrentPage}) => {
     const {
+        bookId,
         title, 
         authors, 
         imageLink,
@@ -51,8 +52,11 @@ const UserBook = ({book}) => {
         }
     }
 
+    const onSaveButtonClicked = () => {
+        onUpdateBookCurrentPage(bookId, currentPage)
+        setSaveButtonEnabled(false)
+    } 
 
-    console.log({book})
     return (
         <Card style={containerStyles}>
             <img src={imageLink}/>
@@ -69,7 +73,7 @@ const UserBook = ({book}) => {
 
                             {
                                 saveButtonEnabled ? 
-                                <Button style={pageButtonsStyles}  variant="light">Guardar</Button> :
+                                <Button onClick={onSaveButtonClicked} style={pageButtonsStyles}  variant="light">Guardar</Button> :
                                 null
                             
                             }

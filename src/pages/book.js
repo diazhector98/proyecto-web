@@ -35,15 +35,12 @@ const BookPage = ({ history }) => {
     useEffect(() => {
         const library = new Library()
         library.getBook({bookId}).then((result) => {
-            console.log({result})
             const postBookData = {
                 ...result.data,
                 bookId: result.data.id,
                 imageLink: result.data.imageLinks ? result.data.imageLinks.thumbnail : null
             }
-            console.log({postBookData})
             library.postBook(postBookData).then((res) => {
-                console.log({res})
             })
             setBookInfo(result.data)
         }).catch((e) => {
@@ -70,7 +67,6 @@ const BookPage = ({ history }) => {
             totalPages,
             dateStarted: date.toISOString()
         }).then((result) => {
-            console.log({result})
             alert("Libro agregado a Libros Leyendo")
             history.push('/profile')
 
@@ -79,12 +75,10 @@ const BookPage = ({ history }) => {
 
     const onPlannningToReadClicked = () => {
         const mongo = new Mongo()
-        console.log({bookInfo, userInfo})
         mongo.addPlanningToReadBook({
             firebaseId: userInfo.userId, 
             bookId: bookInfo.id
         }).then((result) => {
-            console.log({result})
             history.push('/profile')
         })
     }
