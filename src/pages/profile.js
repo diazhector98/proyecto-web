@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Row, Col, Button, Navbar } from "react-bootstrap"
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
-import logo from '../pages/assets/logo1.png'
+import logo from '../pages/assets/logo_web.png'
 import "firebase/auth";
 import app from "../base.js"
 import Mongo from '../utils/mongo'
@@ -128,7 +128,7 @@ const ProfilePage = ({ history }) => {
             <Navbar bg="light" variant="light">
                 <Navbar.Brand href="/home">
                     {/* 71 y 100 */}
-                    <img src={logo} alt="Logo" height="61px" width="90" />
+                    <img src={logo} alt="Logo" height="60px" width="90" />
 
                 </Navbar.Brand>
                 <Nav className="mr-auto">
