@@ -56,7 +56,6 @@ class Mongo {
     }
 
     updateBookCurrentPage = async ({bookId, firebaseId, currentPage}) => {
-        console.log({bookId, firebaseId, currentPage})
         const result = await axios.post(`${DATABASE_PATH}user/book/updateCurrentPage/`, null, {
             params: {
                 bookId, 
@@ -64,7 +63,17 @@ class Mongo {
                 currentPage
             }}
         )
-        console.log({result})
+        return result;
+    }
+
+    setPagesRead = async ({firebaseId,date,pages}) => {
+        const result = await axios.post(`${DATABASE_PATH}user/stats/pagesRead/`, null, {
+            params: {
+                date, 
+                firebaseId, 
+                pages
+            }}
+        )
         return result;
     }
 
