@@ -12,6 +12,7 @@ import 'react-calendar/dist/Calendar.css';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import logo from '../pages/assets/logo_web.png'
+import NavBarSearch from '../utils/navbarSearch'
 
 import {
     useParams
@@ -19,11 +20,11 @@ import {
 const BookPage = ({ history }) => {
     let { bookId } = useParams();
     const [userOnline, setUserOnline] = useState([])
-    let [books, setBooks] = useState([])
+    let [findBooks, setBooks] = useState([])
     const manage = new ManageUser()
     manage.allowAccess({ history })
     const LogOut = (() => {
-        manage.logOutUser({history})
+        manage.logOutUser({ history })
     });
     let [textQuery, setTextQuery] = useState("")
     const [date, onDateChanged] = useState(new Date())
@@ -71,19 +72,21 @@ const BookPage = ({ history }) => {
     }, [])
 
     const searchBooks = () => {
+ 
         const library = new Library()
         library.searchBooks({
-          textQuery
+            textQuery
         }).then(result => {
-          console.log({
-            result
-          })
-          const {
-            books
-          } = result.data
-          setBooks(books)
+            console.log({
+                result
+            })
+            const {
+                books
+            } = result.data
+            setBooks(books)
+            history.push(`/books`)
         })
-      }
+    }
 
     const onReadingNowClicked = () => {
         const mongo = new Mongo()
@@ -109,6 +112,11 @@ const BookPage = ({ history }) => {
             history.push('/profile')
         })
     }
+
+    const onBookSelected = (bookId) => {
+        history.push(`/book/${bookId}`)
+      }
+
     const NavBarStatus = ({ }) => {
         if (userOnline) {
             return [<Nav.Link href="/profile" key={3}> Profile </Nav.Link>,
@@ -143,6 +151,8 @@ const BookPage = ({ history }) => {
                     <Button id="buscarLibro" variant="outline-primary" onClick={searchBooks} > Search </Button>
                 </Form >
             </Navbar>
+            <div>
+            </div>
             <img src={bookInfo.imageLinks.thumbnail} />
             <p>Id: {bookInfo.id}</p>
             <p>Title: {bookInfo.title}</p>

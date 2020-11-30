@@ -10,11 +10,11 @@ import Button from 'react-bootstrap/Button'
 import app from "../base.js"
 
 const BooksPage = ({ history }) => {
-
   let [textQuery, setTextQuery] = useState("")
   let [books, setBooks] = useState([])
   const [userOnline, setUserOnline] = useState([])
   const manage = new ManageUser()
+
   manage.allowAccess({history})
   useEffect(() => {
     app.auth().onAuthStateChanged((user) => {
