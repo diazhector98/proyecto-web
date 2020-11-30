@@ -3,7 +3,7 @@ import React, { useCallback, useEffect } from 'react';
 import Background from '../pages/assets/LandingBackground.jpg'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Button from 'react-bootstrap/Button'
-
+import ManageUser from '../utils/manageUser'
 
 
 var sectionStyle = {
@@ -26,6 +26,8 @@ var container = {
 }
 
 const LandingPage = ({ history }) => {
+    const manage = new ManageUser()
+    manage.alreadyLogged({ history })
 
     const createAccountButtonClicked = () => {
         history.push("/signup");

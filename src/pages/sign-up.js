@@ -8,8 +8,24 @@ import { Col, Form } from "react-bootstrap"
 import logo from '../pages/assets/logo_web.png'
 import * as firebase from "firebase/app";
 import Mongo from '../utils/mongo'
+import ManageUser from '../utils/manageUser'
 
 const SignUpPage = ({ history }) => {
+    const logInButtonPushed = () => {
+        history.push("/login");
+    }
+
+    const manage = new ManageUser()
+    manage.alreadyLogged({ history })
+    let check = false;
+    let checkItem = () => {
+        check = !check;
+        if (check === true) {
+            firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        } else {
+            firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        }
+    }
     const handleSignUp = useCallback(async event => {
         event.preventDefault();
         const { first_name, last_name, email, password } = event.target.elements;
@@ -25,7 +41,7 @@ const SignUpPage = ({ history }) => {
                     var user = firebase.auth().currentUser;
                     var fname = first_name.value
                     var lname = last_name.value
-                    console.log({user});
+                    console.log({ user });
 
                     const mongo = new Mongo();
                     mongo.insertUser({
@@ -33,22 +49,22 @@ const SignUpPage = ({ history }) => {
                         name: fname + " " + lname,
                         email: email.value
                     })
-                    
+
                     const db = firebase.firestore();
                     db
-                      .collection("users")
-                      .doc(user.uid)
-                      .set({ fname, lname});
+                        .collection("users")
+                        .doc(user.uid)
+                        .set({ fname, lname });
                     history.push("/profile");
-                  })
-                  .catch((error) => console.error("Error: ", error));
+                })
+                .catch((error) => console.error("Error: ", error));
         } catch (error) {
             alert(error);
         }
     }, [history]);
 
     return (
-        
+
 
         <div className="restof">
             <div>
@@ -59,12 +75,12 @@ const SignUpPage = ({ history }) => {
 
                     </Navbar.Brand>
                     <Nav className="mr-auto">
-                       
+
                     </Nav>
-                
+
 
                 </Navbar>
-                <div className="container">
+                <div className="container" style={{ marginTop: "75px" }}>
                     <h1>Sign Up</h1>
 
 
@@ -91,12 +107,18 @@ const SignUpPage = ({ history }) => {
                             <Form.Label>Password</Form.Label>
                             <Form.Control name="password" type="password" placeholder="Password" required />
                         </Form.Group>
-
+                        <Form.Group controlId="formBasicCheckbox">
+                            <Form.Check type="checkbox" label="Remember me" onChange={checkItem}
+                            />
+                        </Form.Group>
                         <Button variant="primary" type="submit">
                             Submit
                         </Button>
                     </Form>
                 </div>
+                <p style={{ marginTop: "10px" }}>
+                    Ya eres usario? Haz click <p style={{ color: 'blue' }} onClick={logInButtonPushed}> aquí </p>
+                </p>
             </div>
         </div>
 

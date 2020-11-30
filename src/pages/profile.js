@@ -2,13 +2,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Row, Col, Button, Navbar } from "react-bootstrap"
 import Nav from 'react-bootstrap/Nav'
-import Form from 'react-bootstrap/Form'
+import * as firebase from "firebase/app";
+import Library from '../utils/library'
 import logo from '../pages/assets/logo_web.png'
 import "firebase/auth";
 import app from "../base.js"
 import Mongo from '../utils/mongo'
+import ManageUser from '../utils/manageUser'
 import BookList from '../components/book-list'
 import Card from 'react-bootstrap/Card'
+import Form from 'react-bootstrap/Form'
 import UserNavBar from '../utils/updatedNavBar'
 import moment from 'moment'
 import WeekStatsChart from '../components/week-stats-chart'
@@ -27,6 +30,8 @@ const ProfilePage = ({ history }) => {
     })
 
     const [pagesRead, setPagesRead] = useState(null)
+    let [textQuery, setTextQuery] = useState("")
+    let [books, setBooks] = useState([])
     const [pagesReadToday, setPagesReadToday] = useState(0)
     const [userBooks, setUserBooks] = useState([])
     const [readingNowBooks, setReadingNowBooks] = useState([])
@@ -35,9 +40,9 @@ const ProfilePage = ({ history }) => {
     const [section, setSection] = useState(READING)
 
     const bookIdInBooks = (id, books) => {
-        for(let i = 0; i < books.length; i++) {
+        for (let i = 0; i < books.length; i++) {
             const book = books[i]
-            const {bookId} = book
+            const { bookId } = book
             if (id === bookId) {
                 return true
             }
@@ -45,10 +50,26 @@ const ProfilePage = ({ history }) => {
         return false
     }
 
+
+    const searchBooks = () => {
+        const library = new Library()
+        library.searchBooks({
+          textQuery
+        }).then(result => {
+          console.log({
+            result
+          })
+          const {
+            books
+          } = result.data
+          setBooks(books)
+        })
+      }
+
     const getUserBookInfo = (id, books) => {
-        for(let i = 0; i < books.length; i++) {
+        for (let i = 0; i < books.length; i++) {
             const book = books[i]
-            const {bookId} = book
+            const { bookId } = book
             if (id === bookId) {
                 return book
             }
@@ -75,10 +96,22 @@ const ProfilePage = ({ history }) => {
             currentPage,
             firebaseId: userInfo.firebaseId
         }).then((result) => {
-            console.log({result})
+            console.log({ result })
         })
     }
-  
+
+    const NavBarStatus = ({ }) => {
+        var user = firebase.auth().currentUser;
+        if (user) {
+            return [<Nav.Link href="/profile" key={3}> Profile </Nav.Link>,
+            <Button variant="light" key={4} onClick={LogOut}>Log Out</Button>]
+        }
+        else {
+            return [<Nav.Link href="/login" key={0}> Log In </Nav.Link>,
+            <Nav.Link href="/signup" key={2}> Sign Up </Nav.Link>]
+        }
+    }
+
     useEffect(() => {
         app.auth().onAuthStateChanged((user) => {
             if (user != null) {
@@ -100,8 +133,8 @@ const ProfilePage = ({ history }) => {
                     mongo.getUserBooks({
                         firebaseId: uid
                     }).then((result) => {
-                        
-                        if(result.data === "Error") {
+
+                        if (result.data === "Error") {
                             return
                         }
                         setUserBooks(result.data)
@@ -113,12 +146,12 @@ const ProfilePage = ({ history }) => {
                         let readBooks = []
 
                         books.forEach(book => {
-                            const {bookId} = book
+                            const { bookId } = book
                             if (userData.planningToRead && bookIdInBooks(bookId, userData.planningToRead)) {
                                 planningBooks.push(book)
                             }
 
-                            console.log({userData})
+                            console.log({ userData })
                             if (userData.booksRead && bookIdInBooks(bookId, userData.booksRead)) {
                                 readBooks.push(book)
                             }
@@ -143,36 +176,17 @@ const ProfilePage = ({ history }) => {
         })
     }, [])
 
-    const LogOut = useCallback(async event => {
-        event.preventDefault();
-        try {
-            app.auth().signOut().then(() => {
-                console.log("User has left")
-            })
+    const manage = new ManageUser()
+    const LogOut = (() => {      
+        manage.logOutUser({history})
+    })
 
-            history.push("/");
-        } catch (error) {
-            alert(error);
-        }
-    }, [history]);
-
-    const Delete = useCallback(async event => {
-        event.preventDefault();
-        try {
-            app.auth().currentUser.delete().then(function () {
-                console.log("User deleted")
-            }).catch(function (error) {
-                // An error happened.
-            });
-
-            history.push("/");
-        } catch (error) {
-            alert(error);
-        }
-    }, [history]);
+    const Delete = (() => {
+        manage.deleteUser({history})
+    })
 
     const onFinishBookClicked = (bookId) => {
-        console.log({bookId})
+        console.log({ bookId })
         const mongo = new Mongo()
         const today = new Date()
         mongo.addBookRead({bookId, firebaseId: userInfo.firebaseId, dateEnded: today}).then((result) => {
@@ -185,7 +199,7 @@ const ProfilePage = ({ history }) => {
         })
     }
 
-    
+
     function formatName() {
         return userInfo.name;
     }
@@ -198,22 +212,26 @@ const ProfilePage = ({ history }) => {
 
     return (
         <div>
-            <Navbar bg="light" variant="light">
-                <Navbar.Brand href="/home">
-                    {/* 71 y 100 */}
+            <Navbar bg="light"
+                variant="light" >
+                <Navbar.Brand href="/home" >
                     <img src={logo} alt="Logo" height="60px" width="90" />
-
                 </Navbar.Brand>
-                <Nav className="mr-auto">
-                    <Nav.Link href="/home">Home</Nav.Link>
-                    <Nav.Link href="/category">Categorias</Nav.Link>
-                    <Nav.Link href="/books">Mis libros</Nav.Link>
-                </Nav>
-                <Form inline>
-                    <Form.Control type="text" placeholder="Busca un libro" className="mr-sm-2" />
-                    <Button variant="outline-primary">Buscar</Button>
-                </Form>
 
+                <Nav className="mr-auto" >
+                    <Nav.Link href="/books" > Mis libros </Nav.Link>
+                </Nav >
+
+                <Form inline >
+                    <NavBarStatus />
+                    <Form.Control type="text"
+                        placeholder="Busca un libro"
+                        className="mr-sm-2"
+                        onChange={
+                            (e) => setTextQuery(e.target.value)
+                        } />
+                    <Button id="buscarLibro" variant="outline-primary" onClick={searchBooks} > Search </Button>
+                </Form >
             </Navbar>
             <Card style={{
                 display: 'flex',
@@ -274,23 +292,23 @@ const ProfilePage = ({ history }) => {
 
                     {
                         section == READING ?
-                        <BookList 
-                            showProgress={true} 
-                            title="Libros Leyendo" 
-                            books={readingNowBooks} 
-                            onUpdateBookCurrentPage={onUpdateBookCurrentPage}
-                            onFinishBookClicked={onFinishBookClicked}
+                            <BookList
+                                showProgress={true}
+                                title="Libros Leyendo"
+                                books={readingNowBooks}
+                                onUpdateBookCurrentPage={onUpdateBookCurrentPage}
+                                onFinishBookClicked={onFinishBookClicked}
                             /> :
-                        section == PLANNING ?
-                        <BookList title="Libros Planeando Leer" books={planningToReadBooks} /> :
-                        section == READ ?
-                        <BookList title="Libros Leidos" books={readBooks} /> :
-                        null
+                            section == PLANNING ?
+                                <BookList title="Libros Planeando Leer" books={planningToReadBooks} /> :
+                                section == READ ?
+                                    <BookList title="Libros Leidos" books={readBooks} /> :
+                                    null
                     }
                 </div>
 
 
-                
+
 
             </Card>
         </div>
