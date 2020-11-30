@@ -12,6 +12,7 @@ import ManageUser from '../utils/manageUser'
 
 const Login = ({ history }) => {
   const manage = new ManageUser()
+  manage.alreadyLogged({history})
   const handleLogin = useCallback(
     async event => {
       event.preventDefault();
@@ -25,14 +26,16 @@ const Login = ({ history }) => {
     history.push("/signup");
 }
 
-  const toggleRememberMe = (value) => {
-    if (value === true) {
-      //user wants to be remembered.2
-      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-    } else {
+
+  let check = false;
+  let checkItem = () => {
+    check = !check;
+    if (check === true) {
       firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    } else {
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
     }
-  }
+}
 
 
   return (
@@ -62,7 +65,7 @@ const Login = ({ history }) => {
             <Form.Control name="password" type="password" placeholder="Password" required />
           </Form.Group>
           <Form.Group controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Remember me"
+            <Form.Check type="checkbox" label="Remember me" onChange = {checkItem}
             />
           </Form.Group>
           <Button variant="primary" type="submit">

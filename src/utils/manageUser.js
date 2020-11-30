@@ -1,5 +1,4 @@
 import app from "../base.js"
-import * as firebase from "firebase/app";
 
 class ManageUser {
     
@@ -42,7 +41,6 @@ class ManageUser {
 
     login = async ({ history, email, password}) => {
         try {
-            firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
             await app
               .auth()
               .signInWithEmailAndPassword(email.value, password.value);
@@ -50,6 +48,19 @@ class ManageUser {
           } catch (error) {
             alert(error);
           }
+    }
+
+
+    alreadyLogged = async ({ history }) => {
+        try {
+            app.auth().onAuthStateChanged((user) => {
+                if(user != null){
+                    history.push("/profile");
+                }
+              })      
+        } catch (error) {
+            alert(error);
+        }
     }
 
 

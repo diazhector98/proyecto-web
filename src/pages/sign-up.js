@@ -8,11 +8,14 @@ import { Col, Form } from "react-bootstrap"
 import logo from '../pages/assets/logo_web.png'
 import * as firebase from "firebase/app";
 import Mongo from '../utils/mongo'
+import ManageUser from '../utils/manageUser'
 
 const SignUpPage = ({ history }) => {
     const logInButtonPushed = () => {
         history.push("/login");
     }
+    const manage = new ManageUser()
+    manage.alreadyLogged({ history })
     const handleSignUp = useCallback(async event => {
         event.preventDefault();
         const { first_name, last_name, email, password } = event.target.elements;
@@ -67,7 +70,7 @@ const SignUpPage = ({ history }) => {
 
 
                 </Navbar>
-                <div className="container" style = {{marginTop: "75px"}}>
+                <div className="container" style={{ marginTop: "75px" }}>
                     <h1>Sign Up</h1>
 
 
@@ -100,7 +103,7 @@ const SignUpPage = ({ history }) => {
                         </Button>
                     </Form>
                 </div>
-                <p style = {{marginTop: "10px"}}>
+                <p style={{ marginTop: "10px" }}>
                     Ya eres usario? Haz click <p style={{ color: 'blue' }} onClick={logInButtonPushed}> aquí </p>
                 </p>
             </div>
