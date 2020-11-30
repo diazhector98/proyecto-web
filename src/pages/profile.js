@@ -12,6 +12,9 @@ import ManageUser from '../utils/manageUser'
 import BookList from '../components/book-list'
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
+import UserNavBar from '../utils/updatedNavBar'
+import moment from 'moment'
+import WeekStatsChart from '../components/week-stats-chart'
 
 const READING = 0
 const PLANNING = 1
@@ -23,9 +26,11 @@ const ProfilePage = ({ history }) => {
         name: "",
         email: "",
         firebaseId: "",
+        pagesRead: null
     })
     let [textQuery, setTextQuery] = useState("")
     let [books, setBooks] = useState([])
+    const [pagesReadToday, setPagesReadToday] = useState(0)
     const [userBooks, setUserBooks] = useState([])
     const [readingNowBooks, setReadingNowBooks] = useState([])
     const [planningToReadBooks, setPlanningToReadBooks] = useState([])
@@ -70,9 +75,20 @@ const ProfilePage = ({ history }) => {
         return null
     }
 
-    const onUpdateBookCurrentPage = (bookId, currentPage) => {
-        console.log("updating book")
+    const onUpdateBookCurrentPage = (bookId, currentPage, delta) => {
+        const today = moment().format("DD-MM-YY")
         const mongo = new Mongo()
+
+        if (userInfo.pagesRead != null) {
+            if (userInfo.pagesRead.[today]) {
+                if (delta > 0) {
+                    setPagesReadToday(pagesReadToday + delta)
+                    mongo.setPagesRead({firebaseId: userInfo.firebaseId, date: today, pages: pagesReadToday + delta}).then((result) => {
+                        console.log({result})
+                    })
+                }
+            }
+        }
         mongo.updateBookCurrentPage({
             bookId,
             currentPage,
@@ -103,7 +119,14 @@ const ProfilePage = ({ history }) => {
                     firebaseId: uid
                 }).then((result) => {
                     const userData = result.data
+                    const today = moment().format("DD-MM-YY")
                     setUserInfo(userData)
+                    if (userData.pagesRead != null) {
+                        if (userData.pagesRead.[today]) {
+                            setPagesReadToday(userData.pagesRead.[today])
+                        }
+                    }
+
                     mongo.getUserBooks({
                         firebaseId: uid
                     }).then((result) => {
@@ -164,8 +187,13 @@ const ProfilePage = ({ history }) => {
         console.log({ bookId })
         const mongo = new Mongo()
         const today = new Date()
-        mongo.addBookRead({ bookId, firebaseId: userInfo.firebaseId, dateEnded: today }).then((result) => {
-            console.log({ result })
+        mongo.addBookRead({bookId, firebaseId: userInfo.firebaseId, dateEnded: today}).then((result) => {
+            let readingBooks = readingNowBooks.filter(book => book.bookId != bookId)
+            let removedBook = readingNowBooks.filter(book => book.bookId == bookId)[0]
+            let booksRead = readBooks
+            booksRead.push(removedBook)
+            setReadingNowBooks(readingBooks)
+            setReadBooks(booksRead)
         })
     }
 
@@ -242,6 +270,13 @@ const ProfilePage = ({ history }) => {
                             </Col>
                         </Row>
                     </div>
+
+                    <div>
+                        <h3> Hoy</h3>
+                        <h4>{pagesReadToday}</h4>
+                    </div>
+
+                    <WeekStatsChart />
                 </Card>
 
                 <div>

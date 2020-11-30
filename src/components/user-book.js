@@ -41,6 +41,7 @@ const UserBook = (
         imageLink,
     } = book
 
+    const [delta, setDelta] = useState(0)
     const [currentPage, setCurrentPage] = useState(null)
     const [totalPages, setTotalPages] = useState(null)
     const [saveButtonEnabled, setSaveButtonEnabled] = useState(false)
@@ -57,6 +58,11 @@ const UserBook = (
     }, [])
 
     const changeCurrentPage = (newCurrentPage) => {
+        if (newCurrentPage < currentPage) {
+            setDelta(delta - 1)
+        } else {
+            setDelta(delta + 1)
+        }
         if (newCurrentPage > 0 && newCurrentPage < totalPages) {
             setCurrentPage(newCurrentPage)
             setSaveButtonEnabled(true)
@@ -66,8 +72,9 @@ const UserBook = (
     }
 
     const onSaveButtonClicked = () => {
-        onUpdateBookCurrentPage(bookId, currentPage)
+        onUpdateBookCurrentPage(bookId, currentPage, delta)
         setSaveButtonEnabled(false)
+        setDelta(0)
     } 
 
     const onFinishClicked = () => {
