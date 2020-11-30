@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Bar } from '@reactchartjs/react-chart.js'
+import moment from 'moment'
 
-const data = {
+const dataTemp = {
   labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
   datasets: [
     {
@@ -41,18 +42,34 @@ const options = {
     },
 }
 
-const WeekStatsChart = () => (
-  <>
-    <div className='header'>
-      <h3 className='title'>Esta semana</h3>
-    </div>
-    <Bar 
-        data={data} 
-        options={options} 
-        height={3}
-        width={3}
-    />
-  </>
-)
+const WeekStatsChart = ({pagesRead}) => {
+
+    const [data, setData] = useState({})
+    useEffect(() => {
+        const format = "DD-MM-YY"
+        const today = moment().format(format)
+        console.log({pagesRead})
+        if (pagesRead) {
+            for(let i = 0; i < 7; i++) {
+                const day = moment().day(i)
+                const dayKey = day.format(format)
+                console.log({dayKey})
+            }
+        }
+    }, [])
+    return (
+        <>
+        <div className='header'>
+          <h3 className='title'>Esta semana</h3>
+        </div>
+        <Bar 
+            data={data} 
+            options={options} 
+            height={3}
+            width={3}
+        />
+      </>
+    )
+}
 
 export default WeekStatsChart
