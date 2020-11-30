@@ -14,8 +14,18 @@ const SignUpPage = ({ history }) => {
     const logInButtonPushed = () => {
         history.push("/login");
     }
+
     const manage = new ManageUser()
     manage.alreadyLogged({ history })
+    let check = false;
+    let checkItem = () => {
+        check = !check;
+        if (check === true) {
+            firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        } else {
+            firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        }
+    }
     const handleSignUp = useCallback(async event => {
         event.preventDefault();
         const { first_name, last_name, email, password } = event.target.elements;
@@ -97,7 +107,10 @@ const SignUpPage = ({ history }) => {
                             <Form.Label>Password</Form.Label>
                             <Form.Control name="password" type="password" placeholder="Password" required />
                         </Form.Group>
-
+                        <Form.Group controlId="formBasicCheckbox">
+                            <Form.Check type="checkbox" label="Remember me" onChange={checkItem}
+                            />
+                        </Form.Group>
                         <Button variant="primary" type="submit">
                             Submit
                         </Button>
