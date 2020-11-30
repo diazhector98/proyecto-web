@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button'
 
 var sectionStyle = {
     width: "100%",
-    height: "1000px",
+    height: "1100px",
     backgroundImage: `url(${Background})`
 };
 
