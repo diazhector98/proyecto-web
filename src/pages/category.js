@@ -24,7 +24,7 @@ const CategoryPage = () => {
   let [textQuery, setTextQuery] = useState("")
   let [books, setBooks] = useState([])
 
-  const NavBarStatus = ({ }) => {
+  const NavBarStatus = () => {
     var user = firebase.auth().currentUser;
     if (user) {
       console.log("User is here")
@@ -38,20 +38,6 @@ const CategoryPage = () => {
     }
   }
 
-  const onInsertUser = () => {
-
-
-    const mongo = new Mongo()
-    mongo.insertUser({
-      firebaseId: "testId",
-      name: "testName",
-      email: "testEmail"
-    }).then(result => {
-      console.log({
-        result
-      })
-    })
-  }
 
   const searchBooks = () => {
     const library = new Library()

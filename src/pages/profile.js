@@ -1,5 +1,5 @@
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Button, Navbar } from "react-bootstrap"
 import Nav from 'react-bootstrap/Nav'
 import * as firebase from "firebase/app";
@@ -12,7 +12,6 @@ import ManageUser from '../utils/manageUser'
 import BookList from '../components/book-list'
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
-import UserNavBar from '../utils/updatedNavBar'
 import moment from 'moment'
 import WeekStatsChart from '../components/week-stats-chart'
 
@@ -21,7 +20,7 @@ const PLANNING = 1
 const READ = 2
 
 const ProfilePage = ({ history }) => {
-    var fname, lname, username, email, uid;
+    var uid;
     const [userInfo, setUserInfo] = useState({
         name: "",
         email: "",

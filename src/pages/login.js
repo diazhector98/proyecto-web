@@ -1,9 +1,7 @@
 import React, { useCallback } from 'react'
 import { withRouter } from 'react-router-dom'
-import app from "../base.js"
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar'
-import Nav from 'react-bootstrap/Nav'
 import * as firebase from "firebase/app";
 import Form from 'react-bootstrap/Form'
 import logo from '../pages/assets/logo_web.png'

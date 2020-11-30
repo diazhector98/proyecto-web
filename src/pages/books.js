@@ -7,7 +7,6 @@ import Nav from 'react-bootstrap/Nav'
 import logo from '../pages/assets/logo_web.png'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import firebase from "../base.js"
 import app from "../base.js"
 
 const BooksPage = ({ history }) => {
@@ -22,7 +21,7 @@ const BooksPage = ({ history }) => {
       setUserOnline(user)
     })
   })
-  const NavBarStatus = ({ }) => {
+  const NavBarStatus = () => {
     if (userOnline) {
       return [<Nav.Link href="/profile" key={3}> Profile </Nav.Link>,
       <Button variant="light" key={4} onClick={LogOut}>Log Out</Button>]
@@ -41,20 +40,6 @@ const BooksPage = ({ history }) => {
     history.push(`/book/${bookId}`)
   }
 
-
-  const onInsertUser = () => {
-    const mongo = new Mongo()
-    mongo.insertUser({
-      firebaseId: "testId",
-      name: "testName",
-      email: "testEmail"
-    }).then(result => {
-      console.log({
-        result
-      })
-    })
-  }
-
   const searchBooks = () => {
     const library = new Library()
     library.searchBooks({
@@ -68,11 +53,6 @@ const BooksPage = ({ history }) => {
       } = result.data
       setBooks(books)
     })
-  }
-
-  var user = firebase.auth().currentUser;
-  if (user) {
-    console.log("Existe un usuario")
   }
 
   return (
@@ -105,7 +85,7 @@ const BooksPage = ({ history }) => {
           {books.map((book, index) => {
             return (
               <div style={{ margin: 40, width: 200 }} onClick={() => onBookSelected(book.id)}>
-                <img style={{ width: 100, height: 200 }} src={book.imageLinks ? book.imageLinks.smallThumbnail : ""} />
+                <img style={{ width: 100, height: 200 }} src={book.imageLinks ? book.imageLinks.smallThumbnail : "Alt text"} />
                 <p key={index} > < b > {book.title} </b> </p >
                 <p> {book.subtitle} </p>
               </div >
@@ -118,3 +98,18 @@ const BooksPage = ({ history }) => {
 }
 
 export default BooksPage
+
+/*
+ const onInsertUser = () => {
+    const mongo = new Mongo()
+    mongo.insertUser({
+      firebaseId: "testId",
+      name: "testName",
+      email: "testEmail"
+    }).then(result => {
+      console.log({
+        result
+      })
+    })
+  }
+*/

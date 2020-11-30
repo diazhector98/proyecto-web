@@ -1,5 +1,5 @@
 import logo from '../pages/assets/logo_web.png'
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import Background from '../pages/assets/LandingBackground.jpg'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import Button from 'react-bootstrap/Button'

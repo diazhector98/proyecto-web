@@ -2,7 +2,7 @@ import * as firebase from "firebase/app";
 import { Button, Nav } from "react-bootstrap"
 
 class UserNavBar {
-    getNavBar = async ({ }) => {
+    getNavBar = async () => {
         var user = firebase.auth().currentUser;
         if (user) {
             return [<Nav.Link href="/profile" key={3}> Profile </Nav.Link>,

@@ -1,8 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
-
-//Agregar el logo
+import React, {useEffect, useState } from 'react'
 import logo from '../pages/assets/logo_web.png'
-import * as firebase from "firebase/app";
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import app from "../base.js"
@@ -11,10 +8,8 @@ import Button from 'react-bootstrap/Button'
 import '../pages/assets/styleTable.css'
 import '../pages/assets/home.css'
 import {
-  ReactiveBase,
   DataSearch,
   SingleRange,
-  ResultCard,
   ReactiveList,
   ResultList
 } from '@appbaseio/reactivesearch';
@@ -34,7 +29,7 @@ const HomePage = ({ history }) => {
     manage.logOutUser({ history })
   });
 
-  const NavBarStatus = ({ }) => {
+  const NavBarStatus = () => {
     if (userOnline) {
       return [<Nav.Link href="/profile" key={3}> Profile </Nav.Link>,
       <Button variant="light" key={4} onClick={LogOut}>Log Out</Button>]
