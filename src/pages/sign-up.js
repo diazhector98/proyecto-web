@@ -67,7 +67,7 @@ const SignUpPage = ({ history }) => {
 
 
                 </Navbar>
-                <div className="container">
+                <div className="container" style = {{marginTop: "75px"}}>
                     <h1>Sign Up</h1>
 
 
@@ -100,7 +100,7 @@ const SignUpPage = ({ history }) => {
                         </Button>
                     </Form>
                 </div>
-                <p>
+                <p style = {{marginTop: "10px"}}>
                     Ya eres usario? Haz click <p style={{ color: 'blue' }} onClick={logInButtonPushed}> aquí </p>
                 </p>
             </div>

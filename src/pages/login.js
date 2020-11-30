@@ -8,25 +8,22 @@ import * as firebase from "firebase/app";
 import Form from 'react-bootstrap/Form'
 import logo from '../pages/assets/logo_web.png'
 import '../pages/assets/useraccess.css'
-
+import ManageUser from '../utils/manageUser'
 
 const Login = ({ history }) => {
+  const manage = new ManageUser()
   const handleLogin = useCallback(
     async event => {
       event.preventDefault();
       const { email, password } = event.target.elements;
-      try {
-        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-        await app
-          .auth()
-          .signInWithEmailAndPassword(email.value, password.value);
-        history.push("/profile");
-      } catch (error) {
-        alert(error);
-      }
+      manage.login({ history, email, password })
     },
     [history]
   );
+
+  const signUpButtonPushed = () => {
+    history.push("/signup");
+}
 
   const toggleRememberMe = (value) => {
     if (value === true) {
@@ -51,7 +48,7 @@ const Login = ({ history }) => {
 
       </Navbar>
 
-      <div className="container">
+      <div className="container" style = {{marginTop: "75px"}}>
         <h1>Log in</h1>
 
         <Form onSubmit={handleLogin}>
@@ -66,7 +63,7 @@ const Login = ({ history }) => {
           </Form.Group>
           <Form.Group controlId="formBasicCheckbox">
             <Form.Check type="checkbox" label="Remember me"
-               />
+            />
           </Form.Group>
           <Button variant="primary" type="submit">
             Submit
@@ -74,7 +71,9 @@ const Login = ({ history }) => {
         </Form>
 
       </div>
-
+      <p style = {{marginTop: "10px"}}>
+        Usuario nuevo? Haz click <p style={{ color: 'blue' }} onClick={signUpButtonPushed}> aquí </p>
+      </p>
     </div>
   );
 };
