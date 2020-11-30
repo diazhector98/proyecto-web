@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Row, Col, Button, Navbar } from "react-bootstrap"
 import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
-import logo from '../pages/assets/logo1.png'
+import logo from '../pages/assets/logo_web.png'
 import "firebase/auth";
 import app from "../base.js"
 import Mongo from '../utils/mongo'
@@ -38,6 +38,29 @@ const ProfilePage = ({ history }) => {
         }
         return false
     }
+
+    const getUserBookInfo = (id, books) => {
+        for(let i = 0; i < books.length; i++) {
+            const book = books[i]
+            const {bookId} = book
+            if (id === bookId) {
+                return book
+            }
+        }
+        return null
+    }
+
+    const onUpdateBookCurrentPage = (bookId, currentPage) => {
+        console.log("updating book")
+        const mongo = new Mongo()
+        mongo.updateBookCurrentPage({
+            bookId,
+            currentPage,
+            firebaseId: userInfo.firebaseId
+        }).then((result) => {
+            console.log({result})
+        })
+    }
   
     useEffect(() => {
         app.auth().onAuthStateChanged((user) => {
@@ -70,12 +93,24 @@ const ProfilePage = ({ history }) => {
                                 planningBooks.push(book)
                             }
 
-                            if (userData.readingNow && bookIdInBooks(bookId, userData.readingNow)) {
-                                readingBooks.push(book)
+                            console.log({userData})
+                            if (userData.booksRead && bookIdInBooks(bookId, userData.booksRead)) {
+                                readBooks.push(book)
                             }
+
+                            if (userData.readingNow && bookIdInBooks(bookId, userData.readingNow)) {
+                                let userBook = getUserBookInfo(bookId, userData.readingNow)
+                                readingBooks.push({
+                                    ...userBook,
+                                    ...book
+                                })
+                            }
+
+
                         })
                         setPlanningToReadBooks(planningBooks)
                         setReadingNowBooks(readingBooks)
+                        setReadBooks(readBooks)
 
                     })
                 })
@@ -111,6 +146,14 @@ const ProfilePage = ({ history }) => {
         }
     }, [history]);
 
+    const onFinishBookClicked = (bookId) => {
+        console.log({bookId})
+        const mongo = new Mongo()
+        const today = new Date()
+        mongo.addBookRead({bookId, firebaseId: userInfo.firebaseId, dateEnded: today}).then((result) => {
+            console.log({result})
+        })
+    }
 
     
     function formatName() {
@@ -128,7 +171,7 @@ const ProfilePage = ({ history }) => {
             <Navbar bg="light" variant="light">
                 <Navbar.Brand href="/home">
                     {/* 71 y 100 */}
-                    <img src={logo} alt="Logo" height="61px" width="90" />
+                    <img src={logo} alt="Logo" height="60px" width="90" />
 
                 </Navbar.Brand>
                 <Nav className="mr-auto">
@@ -194,7 +237,13 @@ const ProfilePage = ({ history }) => {
 
                     {
                         section == READING ?
-                        <BookList title="Libros Leyendo" books={readingNowBooks} /> :
+                        <BookList 
+                            showProgress={true} 
+                            title="Libros Leyendo" 
+                            books={readingNowBooks} 
+                            onUpdateBookCurrentPage={onUpdateBookCurrentPage}
+                            onFinishBookClicked={onFinishBookClicked}
+                            /> :
                         section == PLANNING ?
                         <BookList title="Libros Planeando Leer" books={planningToReadBooks} /> :
                         section == READ ?
