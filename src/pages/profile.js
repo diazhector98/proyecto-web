@@ -93,6 +93,11 @@ const ProfilePage = ({ history }) => {
                                 planningBooks.push(book)
                             }
 
+                            console.log({userData})
+                            if (userData.booksRead && bookIdInBooks(bookId, userData.booksRead)) {
+                                readBooks.push(book)
+                            }
+
                             if (userData.readingNow && bookIdInBooks(bookId, userData.readingNow)) {
                                 let userBook = getUserBookInfo(bookId, userData.readingNow)
                                 readingBooks.push({
@@ -100,9 +105,12 @@ const ProfilePage = ({ history }) => {
                                     ...book
                                 })
                             }
+
+
                         })
                         setPlanningToReadBooks(planningBooks)
                         setReadingNowBooks(readingBooks)
+                        setReadBooks(readBooks)
 
                     })
                 })
@@ -140,6 +148,11 @@ const ProfilePage = ({ history }) => {
 
     const onFinishBookClicked = (bookId) => {
         console.log({bookId})
+        const mongo = new Mongo()
+        const today = new Date()
+        mongo.addBookRead({bookId, firebaseId: userInfo.firebaseId, dateEnded: today}).then((result) => {
+            console.log({result})
+        })
     }
 
     

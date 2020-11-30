@@ -43,6 +43,18 @@ class Mongo {
         return result
     }
 
+    addBookRead = async({bookId, firebaseId, dateEnded}) => {
+        const result = await axios.post(`${DATABASE_PATH}booksRead/`, null, {
+            params: {
+                bookId, 
+                firebaseId, 
+                dateEnded
+            }}
+        )
+        console.log({result})
+        return result;
+    }
+
     updateBookCurrentPage = async ({bookId, firebaseId, currentPage}) => {
         console.log({bookId, firebaseId, currentPage})
         const result = await axios.post(`${DATABASE_PATH}user/book/updateCurrentPage/`, null, {
