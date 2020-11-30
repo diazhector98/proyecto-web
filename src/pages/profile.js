@@ -173,13 +173,12 @@ const ProfilePage = ({ history }) => {
         })
     }, [])
 
-    const LogOut = (() => {
-        const manage = new ManageUser()
+    const manage = new ManageUser()
+    const LogOut = (() => {      
         manage.logOutUser({history})
     })
 
     const Delete = (() => {
-        const manage = new ManageUser()
         manage.deleteUser({history})
     })
 

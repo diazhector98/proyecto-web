@@ -15,6 +15,8 @@ const BooksPage = ({ history }) => {
   let [textQuery, setTextQuery] = useState("")
   let [books, setBooks] = useState([])
   const [userOnline, setUserOnline] = useState([])
+  const manage = new ManageUser()
+  manage.allowAccess({history})
   useEffect(() => {
     app.auth().onAuthStateChanged((user) => {
       setUserOnline(user)
@@ -32,7 +34,6 @@ const BooksPage = ({ history }) => {
   }
 
   const LogOut = (() => {
-    const manage = new ManageUser()
     manage.logOutUser({history})
 });
 

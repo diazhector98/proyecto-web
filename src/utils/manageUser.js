@@ -27,6 +27,18 @@ class ManageUser {
         }
     }
 
+    allowAccess = async ({ history }) => {
+        try {
+            app.auth().onAuthStateChanged((user) => {
+                if(user == null){
+                    history.push("/login");
+                }
+              })      
+        } catch (error) {
+            alert(error);
+        }
+    }
+
 }
 
 export default ManageUser
