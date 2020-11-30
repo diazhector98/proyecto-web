@@ -25,6 +25,8 @@ const ProfilePage = ({ history }) => {
         firebaseId: "",
         pagesRead: null
     })
+
+    const [pagesRead, setPagesRead] = useState(null)
     const [pagesReadToday, setPagesReadToday] = useState(0)
     const [userBooks, setUserBooks] = useState([])
     const [readingNowBooks, setReadingNowBooks] = useState([])
@@ -89,6 +91,7 @@ const ProfilePage = ({ history }) => {
                     const today = moment().format("DD-MM-YY")
                     setUserInfo(userData)
                     if (userData.pagesRead != null) {
+                        setPagesRead(userData.pagesRead)
                         if (userData.pagesRead.[today]) {
                             setPagesReadToday(userData.pagesRead.[today])
                         }
@@ -257,7 +260,7 @@ const ProfilePage = ({ history }) => {
                         <h4>{pagesReadToday}</h4>
                     </div>
 
-                    <WeekStatsChart />
+                    <WeekStatsChart pagesRead={pagesRead}/>
                 </Card>
 
                 <div>
