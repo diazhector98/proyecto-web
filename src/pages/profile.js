@@ -10,6 +10,7 @@ import Mongo from '../utils/mongo'
 import BookList from '../components/book-list'
 import Card from 'react-bootstrap/Card'
 import UserNavBar from '../utils/updatedNavBar'
+import moment from 'moment'
 
 const READING = 0
 const PLANNING = 1
@@ -21,7 +22,9 @@ const ProfilePage = ({ history }) => {
         name: "",
         email: "",
         firebaseId: "",
+        pagesRead: null
     })
+    const [pagesReadToday, setPagesReadToday] = useState(0)
     const [userBooks, setUserBooks] = useState([])
     const [readingNowBooks, setReadingNowBooks] = useState([])
     const [planningToReadBooks, setPlanningToReadBooks] = useState([])
@@ -50,8 +53,13 @@ const ProfilePage = ({ history }) => {
         return null
     }
 
-    const onUpdateBookCurrentPage = (bookId, currentPage) => {
-        console.log("updating book")
+    const onUpdateBookCurrentPage = (bookId, currentPage, delta) => {
+        const today = moment().format("DD-MM-YY")
+        if (userInfo.pagesRead != null) {
+            if (userInfo.pagesRead.[today]) {
+                console.log({userInfo, delta})
+            }
+        }
         const mongo = new Mongo()
         mongo.updateBookCurrentPage({
             bookId,
@@ -71,7 +79,14 @@ const ProfilePage = ({ history }) => {
                     firebaseId: uid
                 }).then((result) => {
                     const userData = result.data
+                    const today = moment().format("DD-MM-YY")
                     setUserInfo(userData)
+                    if (userData.pagesRead != null) {
+                        if (userData.pagesRead.[today]) {
+                            setPagesReadToday(userData.pagesRead.[today])
+                        }
+                    }
+
                     mongo.getUserBooks({
                         firebaseId: uid
                     }).then((result) => {
@@ -228,6 +243,11 @@ const ProfilePage = ({ history }) => {
                                 <Button type="Danger" onClick={Delete}>Delete Account</Button>
                             </Col>
                         </Row>
+                    </div>
+
+                    <div>
+                        <h3> Pages Read Today</h3>
+                        <h4>{pagesReadToday}</h4>
                     </div>
                 </Card>
 
