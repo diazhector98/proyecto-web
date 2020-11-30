@@ -11,6 +11,7 @@ import BookList from '../components/book-list'
 import Card from 'react-bootstrap/Card'
 import UserNavBar from '../utils/updatedNavBar'
 import moment from 'moment'
+import WeekStatsChart from '../components/week-stats-chart'
 
 const READING = 0
 const PLANNING = 1
@@ -252,9 +253,11 @@ const ProfilePage = ({ history }) => {
                     </div>
 
                     <div>
-                        <h3> Pages Read Today</h3>
+                        <h3> Hoy</h3>
                         <h4>{pagesReadToday}</h4>
                     </div>
+
+                    <WeekStatsChart />
                 </Card>
 
                 <div>
