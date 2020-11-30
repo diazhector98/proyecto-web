@@ -29,22 +29,4 @@ class ManageUser {
 
 }
 
-/*
-    const Delete = useCallback(async event => {
-        event.preventDefault();
-        try {
-            app.auth().currentUser.delete().then(function () {
-                console.log("User deleted")
-            }).catch(function (error) {
-                // An error happened.
-            });
-
-            history.push("/");
-        } catch (error) {
-            alert(error);
-        }
-    }, [history]);
-*/
-
-
 export default ManageUser
