@@ -151,7 +151,12 @@ const ProfilePage = ({ history }) => {
         const mongo = new Mongo()
         const today = new Date()
         mongo.addBookRead({bookId, firebaseId: userInfo.firebaseId, dateEnded: today}).then((result) => {
-            console.log({result})
+            let readingBooks = readingNowBooks.filter(book => book.bookId != bookId)
+            let removedBook = readingNowBooks.filter(book => book.bookId == bookId)[0]
+            let booksRead = readBooks
+            booksRead.push(removedBook)
+            setReadingNowBooks(readingBooks)
+            setReadBooks(booksRead)
         })
     }
 
