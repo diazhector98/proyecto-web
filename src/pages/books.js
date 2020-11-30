@@ -1,8 +1,6 @@
-import React, {
-  useState
-} from 'react'
+import React, { useState, useEffect } from 'react'
 import Mongo from '../utils/mongo'
-import UserNavBar from '../utils/updatedNavBar'
+import ManageUser from '../utils/manageUser'
 import Library from '../utils/library'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
@@ -10,26 +8,33 @@ import logo from '../pages/assets/logo_web.png'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import firebase from "../base.js"
+import app from "../base.js"
 
 const BooksPage = ({ history }) => {
 
   let [textQuery, setTextQuery] = useState("")
   let [books, setBooks] = useState([])
-
+  const [userOnline, setUserOnline] = useState([])
+  useEffect(() => {
+    app.auth().onAuthStateChanged((user) => {
+      setUserOnline(user)
+    })
+  })
   const NavBarStatus = ({ }) => {
-    var user = firebase.auth().currentUser;
-    if (user) {
-      console.log("User is here")
+    if (userOnline) {
       return [<Nav.Link href="/profile" key={3}> Profile </Nav.Link>,
-      <Button variant="light" key={4}>Log Out</Button>]
+      <Button variant="light" key={4} onClick={LogOut}>Log Out</Button>]
     }
     else {
-      console.log("User is not here")
       return [<Nav.Link href="/login" key={0}> Log In </Nav.Link>,
       <Nav.Link href="/signup" key={2}> Sign Up </Nav.Link>]
     }
   }
 
+  const LogOut = (() => {
+    const manage = new ManageUser()
+    manage.logOutUser({history})
+});
 
   const onBookSelected = (bookId) => {
     history.push(`/book/${bookId}`)

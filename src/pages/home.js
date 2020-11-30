@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 //Agregar el logo
 import logo from '../pages/assets/logo_web.png'
 import * as firebase from "firebase/app";
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import Form from 'react-bootstrap/Form'
+import app from "../base.js"
+import ManageUser from '../utils/manageUser'
 import Button from 'react-bootstrap/Button'
 import '../pages/assets/styleTable.css'
 import '../pages/assets/home.css'
@@ -19,13 +20,24 @@ import {
 } from '@appbaseio/reactivesearch';
 
 
-const homePage = () => {
+const HomePage = ({ history }) => {
+  const [userOnline, setUserOnline] = useState([])
+  useEffect(()=>{
+    app.auth().onAuthStateChanged((user) => {
+      setUserOnline(user)
+    })
+  })
+
+  const LogOut = (() => {
+    const manage = new ManageUser()
+    manage.logOutUser({history})
+});
+
   const NavBarStatus = ({}) => {
-    var user = firebase.auth().currentUser;
-    if (user){
+    if (userOnline){
       console.log("User is here")
       return [<Nav.Link href="/profile" key={3}> Profile </Nav.Link>,
-      <Button variant="light" key={4}>Log Out</Button>]
+      <Button variant="light" key={4} onClick={LogOut}>Log Out</Button>]
     }
     else{
       console.log("User is not here")
@@ -120,4 +132,4 @@ const homePage = () => {
     )
 }
 
-export default homePage
+export default HomePage

@@ -10,6 +10,9 @@ import * as firebase from "firebase/app";
 import Mongo from '../utils/mongo'
 
 const SignUpPage = ({ history }) => {
+    const logInButtonPushed = () => {
+        history.push("/login");
+    }
     const handleSignUp = useCallback(async event => {
         event.preventDefault();
         const { first_name, last_name, email, password } = event.target.elements;
@@ -25,7 +28,7 @@ const SignUpPage = ({ history }) => {
                     var user = firebase.auth().currentUser;
                     var fname = first_name.value
                     var lname = last_name.value
-                    console.log({user});
+                    console.log({ user });
 
                     const mongo = new Mongo();
                     mongo.insertUser({
@@ -33,22 +36,22 @@ const SignUpPage = ({ history }) => {
                         name: fname + " " + lname,
                         email: email.value
                     })
-                    
+
                     const db = firebase.firestore();
                     db
-                      .collection("users")
-                      .doc(user.uid)
-                      .set({ fname, lname});
+                        .collection("users")
+                        .doc(user.uid)
+                        .set({ fname, lname });
                     history.push("/profile");
-                  })
-                  .catch((error) => console.error("Error: ", error));
+                })
+                .catch((error) => console.error("Error: ", error));
         } catch (error) {
             alert(error);
         }
     }, [history]);
 
     return (
-        
+
 
         <div className="restof">
             <div>
@@ -59,9 +62,9 @@ const SignUpPage = ({ history }) => {
 
                     </Navbar.Brand>
                     <Nav className="mr-auto">
-                       
+
                     </Nav>
-                
+
 
                 </Navbar>
                 <div className="container">
@@ -97,6 +100,9 @@ const SignUpPage = ({ history }) => {
                         </Button>
                     </Form>
                 </div>
+                <p>
+                    Ya eres usario? Haz click <p style={{ color: 'blue' }} onClick={logInButtonPushed}> aquí </p>
+                </p>
             </div>
         </div>
 
