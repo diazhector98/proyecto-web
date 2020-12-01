@@ -48,7 +48,6 @@ const UserBook = (
     const [saveButtonEnabled, setSaveButtonEnabled] = useState(false)
 
     useEffect(() => {
-        console.log({book})
         if (book.currentPage && book.totalPages) {
             setCurrentPage(book.currentPage)
             setTotalPages(book.totalPages)

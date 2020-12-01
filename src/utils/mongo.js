@@ -77,6 +77,11 @@ class Mongo {
         return result;
     }
 
+    getUserRecommendations = async ({firebaseId}) => {
+        const result = await axios.get(`${DATABASE_PATH}user/recommendations`, {params: {firebaseId}})
+        return result
+    }
+
 }
 
 export default Mongo

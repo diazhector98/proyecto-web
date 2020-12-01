@@ -12,7 +12,6 @@ const BookList = ({
     return (
         <div>
             {books ? books.map((book, index) => {
-                console.log({book})
                 return (
                 <UserBook 
                     key={index} 

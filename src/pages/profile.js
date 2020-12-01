@@ -41,6 +41,7 @@ const ProfilePage = ({ history }) => {
     const [planningToReadBooks, setPlanningToReadBooks] = useState([])
     const [readBooks, setReadBooks] = useState([])
     const [section, setSection] = useState(READING)
+    const [recommendedBookIds, setRecommendedBookIds] = useState([])
 
     const bookIdInBooks = (id, books) => {
         for (let i = 0; i < books.length; i++) {
@@ -117,6 +118,10 @@ const ProfilePage = ({ history }) => {
                         }
                     }
 
+                    mongo.getUserRecommendations({firebaseId: uid}).then((result) => {
+                        setRecommendedBookIds(result.data)
+                    })
+
                     mongo.getUserBooks({
                         firebaseId: uid
                     }).then((result) => {
@@ -138,7 +143,6 @@ const ProfilePage = ({ history }) => {
                                 planningBooks.push(book)
                             }
 
-                            console.log({ userData })
                             if (userData.booksRead && bookIdInBooks(bookId, userData.booksRead)) {
                                 readBooks.push(book)
                             }
@@ -308,7 +312,7 @@ const ProfilePage = ({ history }) => {
                             
                             /> :
                         section == RECOMMENDATIONS ?
-                            <Recommendations /> :
+                            <Recommendations bookIds={recommendedBookIds}/> :
                         null
                     }
                 </div>
