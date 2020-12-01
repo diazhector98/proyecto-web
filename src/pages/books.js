@@ -59,6 +59,12 @@ const BooksPage = ({ history }) => {
     })
   }
 
+  const onKeyUp = (event) => {
+    if (event.key === "Enter") {
+      searchBooks()
+    }
+  }
+
   return (
 
     <div>
@@ -91,7 +97,8 @@ const BooksPage = ({ history }) => {
                 }
                 style={{
                   fontSize: 40
-                }} 
+                }}
+                onKeyPress={onKeyUp} 
               />
               <Button 
                 style={{width: 300}}
