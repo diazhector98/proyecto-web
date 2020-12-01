@@ -181,10 +181,9 @@ const BookPage = ({ history }) => {
                     <p style={{fontSize: 80, fontWeight: 'bolder'}}>{bookInfo.title}</p>
                     <p style={{fontSize: 50, color: 'gray'}}>{bookInfo.authors.join(',')}</p>
                     <p style={{fontSize: 30}}>{bookInfo.publishedDate}</p>
-                    <p>{bookInfo.averageRating}</p>
                     <p>{bookInfo.description}</p>
-                    <Button onClick={() => setModalShow(true)}>Leyendo Ahora</Button>
-                    <Button onClick={onPlannningToReadClicked}>Planeo Leer</Button>
+                    <Button style={{margin: 10, fontSize: 40}} variant="outline-primary" onClick={() => setModalShow(true)}>Leyendo Ahora</Button>
+                    <Button style={{margin: 10, fontSize: 40}} variant="outline-primary" onClick={onPlannningToReadClicked}>Planeo Leer</Button>
                 </div>
                 
             </div>
