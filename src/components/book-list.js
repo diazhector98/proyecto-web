@@ -10,7 +10,6 @@ const BookList = ({
 }) => {
     return (
         <div>
-            <h1>{title}</h1>
             {books ? books.map((book, index) => {
                 console.log({book})
                 return (

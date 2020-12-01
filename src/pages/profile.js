@@ -284,9 +284,24 @@ const ProfilePage = ({ history }) => {
                     <div style={{
                         display: 'flex',
                     }}>
-                        <Button onClick={() => setSection(READING)}> Leyendo </Button>
-                        <Button onClick={() => setSection(PLANNING)}> Planeando Leer </Button>
-                        <Button onClick={() => setSection(READ)}> Leídos </Button>
+                        <Button 
+                            variant={section === READING ? 'primary' : 'outline-primary'}
+                            style={{fontSize: 30, margin: 10}} 
+                            onClick={() => setSection(READING)}> 
+                            Leyendo 
+                        </Button>
+                        <Button 
+                            variant={section === PLANNING ? 'primary' : 'outline-primary'}
+                            style={{fontSize: 30, margin: 10}} 
+                            onClick={() => setSection(PLANNING)}> 
+                            Planeando Leer 
+                        </Button>
+                        <Button 
+                            variant={section === READ ? 'primary' : 'outline-primary'}
+                            style={{fontSize: 30, margin: 10}} 
+                            onClick={() => setSection(READ)}> 
+                            Leídos 
+                        </Button>
                     </div>
 
                     {
