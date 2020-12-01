@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import Library from '../utils/library'
 import BookList from './book-list'
 
-const Recommendations = ({bookIds}) => {
+const Recommendations = ({bookIds, onMoreInfoClicked}) => {
     console.log({bookIds})
 
     const [recommendedBooks, setRecommendedBooks] = useState([])
@@ -22,7 +22,7 @@ const Recommendations = ({bookIds}) => {
             <BookList 
                 title="Libros Planeando Leer" 
                 books={recommendedBooks} 
-                onMoreInfoClicked={() => 2}
+                onMoreInfoClicked={onMoreInfoClicked}
             />
         </div>
     )

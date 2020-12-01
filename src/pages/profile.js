@@ -317,7 +317,7 @@ const ProfilePage = ({ history }) => {
                             
                             /> :
                         section == RECOMMENDATIONS ?
-                            <Recommendations bookIds={recommendedBookIds}/> :
+                            <Recommendations bookIds={recommendedBookIds} onMoreInfoClicked={onMoreInfoClicked}/> :
                         null
                     }
                 </div>
