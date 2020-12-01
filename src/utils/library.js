@@ -21,6 +21,18 @@ class Library {
         const result = await axios.post(`${DATABASE_PATH}book`, null, {params: book})
         return result
     }
+
+    getBooksWithIds = async ({bookIds}) => {
+        
+        console.log({bookIds})
+        let string = "[" + bookIds.toString() + "]"
+        console.log({string})
+        const result = await axios.get(`${DATABASE_PATH}books/recommended`, {params: {
+            bookIds: string
+        }})
+
+        return result
+    }
 }
 
 export default Library
