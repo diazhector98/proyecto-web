@@ -13,6 +13,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import logo from '../pages/assets/logo_web.png'
 import NavBarSearch from '../utils/navbarSearch'
+import ReactStars from "react-rating-stars-component";
 
 import {
     useParams
@@ -43,6 +44,7 @@ const BookPage = ({ history }) => {
     const [userInfo, setUserInfo] = useState({
         userId: "",
     })
+    const [rating, setRating] = useState(0)
 
     useEffect(() => {
         const library = new Library()
@@ -56,6 +58,8 @@ const BookPage = ({ history }) => {
             })
             console.log({result})
             setBookInfo(result.data)
+            console.log(result.data.averageRating)
+            setRating(result.data.averageRating)
         }).catch((e) => {
             console.log({ e })
         })
@@ -166,6 +170,8 @@ const BookPage = ({ history }) => {
                             width: '100%'
                         }}
                         src={bookInfo.imageLinks.thumbnail} />
+
+                    {rating !== 0 && rating !== undefined ? <ReactStars  isHalf={true} size={40} value={rating} count={5}/> : null}
                 </div>
 
                 <div style={{
