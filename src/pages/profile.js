@@ -15,10 +15,12 @@ import Form from 'react-bootstrap/Form'
 import moment from 'moment'
 import WeekStatsChart from '../components/week-stats-chart'
 import Spinner from 'react-bootstrap/Spinner'
+import Recommendations from '../components/recommendations'
 
 const READING = 0
 const PLANNING = 1
 const READ = 2
+const RECOMMENDATIONS = 3
 
 const ProfilePage = ({ history }) => {
     var uid;
@@ -276,6 +278,12 @@ const ProfilePage = ({ history }) => {
                             onClick={() => setSection(READ)}> 
                             Leídos 
                         </Button>
+                        <Button 
+                            variant={section === RECOMMENDATIONS ? 'primary' : 'outline-primary'}
+                            style={{fontSize: 30, margin: 10}} 
+                            onClick={() => setSection(RECOMMENDATIONS)}> 
+                            Recomendaciones 
+                        </Button>
                     </div>
 
                     {
@@ -299,6 +307,8 @@ const ProfilePage = ({ history }) => {
                                 onMoreInfoClicked={onMoreInfoClicked}
                             
                             /> :
+                        section == RECOMMENDATIONS ?
+                            <Recommendations /> :
                         null
                     }
                 </div>
