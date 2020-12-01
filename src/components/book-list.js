@@ -6,7 +6,8 @@ const BookList = ({
     books, 
     onUpdateBookCurrentPage, 
     showProgress,
-    onFinishBookClicked
+    onFinishBookClicked,
+    onMoreInfoClicked
 }) => {
     return (
         <div>
@@ -19,6 +20,7 @@ const BookList = ({
                     onUpdateBookCurrentPage={onUpdateBookCurrentPage}
                     showProgress={showProgress}
                     onFinishBookClicked={onFinishBookClicked}
+                    onMoreInfoClicked={onMoreInfoClicked}
                 />)
             }) : null}
         </div>

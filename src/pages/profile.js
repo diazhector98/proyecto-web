@@ -184,6 +184,10 @@ const ProfilePage = ({ history }) => {
         })
     }
 
+    const onMoreInfoClicked = (bookId) => {
+        history.push(`/book/${bookId}`)
+    }
+
 
     function formatName() {
         return userInfo.name;
@@ -282,12 +286,20 @@ const ProfilePage = ({ history }) => {
                                 books={readingNowBooks}
                                 onUpdateBookCurrentPage={onUpdateBookCurrentPage}
                                 onFinishBookClicked={onFinishBookClicked}
+                                onMoreInfoClicked={onMoreInfoClicked}
                             /> :
-                            section == PLANNING ?
-                                <BookList title="Libros Planeando Leer" books={planningToReadBooks} /> :
-                                section == READ ?
-                                    <BookList title="Libros Leidos" books={readBooks} /> :
-                                    null
+                        section == PLANNING ?
+                            <BookList 
+                                title="Libros Planeando Leer" 
+                                books={planningToReadBooks} 
+                                onMoreInfoClicked={onMoreInfoClicked}
+                                /> :
+                        section == READ ?
+                            <BookList title="Libros Leidos" books={readBooks} 
+                                onMoreInfoClicked={onMoreInfoClicked}
+                            
+                            /> :
+                        null
                     }
                 </div>
 
