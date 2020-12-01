@@ -81,17 +81,37 @@ const BooksPage = ({ history }) => {
       </Navbar>
 
       <div>
-        <div style={{ display: "flex", flexWrap: "wrap" }} >
-          {books.map((book, index) => {
-            return (
-              <div style={{ margin: 40, width: 200 }} onClick={() => onBookSelected(book.id)}>
-                <img style={{ width: 100, height: 200 }} src={book.imageLinks ? book.imageLinks.smallThumbnail : "Alt text"} />
-                <p key={index} > < b > {book.title} </b> </p >
-                <p> {book.subtitle} </p>
-              </div >
-            )
-          })
-          } </div>
+          <div style={{textAlign: 'left', padding: 50}}>
+
+            <h1 style={{fontSize: 150, fontWeight: 'bolder', color: 'black'}}> Busca Un Libro </h1>
+            <div style={{display: 'flex'}}>
+              <Form.Control 
+                type="text"
+                placeholder="Harry Potter"
+                className="mr-sm-2"
+                onChange={
+                  (e) => setTextQuery(e.target.value)
+                }
+                style={{
+                  fontSize: 40
+                }} 
+              />
+              <Button style={{width: 300}}id="buscarLibro" variant="primary" onClick={searchBooks} > Buscar </Button>
+            </div>
+            
+            <div style={{ display: "flex", flexWrap: "wrap" }} >
+              {books.map((book, index) => {
+                return (
+                  <div style={{ margin: 40, width: 200 }} onClick={() => onBookSelected(book.id)}>
+                    <img style={{ width: 100, height: 200 }} src={book.imageLinks ? book.imageLinks.smallThumbnail : "Alt text"} />
+                    <p key={index} > < b > {book.title} </b> </p >
+                    <p> {book.subtitle} </p>
+                  </div >
+                )
+              })}
+            </div>
+
+          </div> 
       </div>
     </div>
   )
