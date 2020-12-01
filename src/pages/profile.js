@@ -277,7 +277,7 @@ const ProfilePage = ({ history }) => {
                         <h4>{pagesReadToday}</h4>
                     </div>
 
-                    <WeekStatsChart pagesRead={pagesRead}/>
+                    <WeekStatsChart pagesRead={userInfo.pagesRead}/>
                 </Card>
 
                 <div>
