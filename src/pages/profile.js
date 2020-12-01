@@ -85,6 +85,10 @@ const ProfilePage = ({ history }) => {
             mongo.setPagesRead({firebaseId: userInfo.firebaseId, date: today, pages: pagesReadToday + delta}).then((result) => {
                 console.log({result})
             })
+            let pr = pagesRead
+            pr.[today] = pagesReadToday + delta
+            console.log({pr})
+            setPagesRead(pr)
         }
         mongo.updateBookCurrentPage({
             bookId,
@@ -273,7 +277,7 @@ const ProfilePage = ({ history }) => {
                         <h4>{pagesReadToday}</h4>
                     </div>
 
-                    <WeekStatsChart pagesRead={userInfo.pagesRead}/>
+                    <WeekStatsChart pagesRead={pagesRead}/>
                 </Card>
 
                 <div>

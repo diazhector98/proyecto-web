@@ -54,6 +54,7 @@ const BookPage = ({ history }) => {
             }
             library.postBook(postBookData).then((res) => {
             })
+            console.log({result})
             setBookInfo(result.data)
         }).catch((e) => {
             console.log({ e })
@@ -151,15 +152,36 @@ const BookPage = ({ history }) => {
                     <Button id="buscarLibro" variant="outline-primary" onClick={searchBooks} > Search </Button>
                 </Form >
             </Navbar>
-            <div>
+            <div style={{
+                display: 'flex',
+                padding: 70,
+                width: '100%'
+            }}>
+                <div style={{
+                    width: '20%',
+                    marginRight: 50
+                }}>
+                    <img 
+                        style={{
+                            width: '100%'
+                        }}
+                        src={bookInfo.imageLinks.thumbnail} />
+                </div>
+
+                <div style={{
+                    width: '70%',
+                    textAlign: 'left'
+                }}>
+                    <p style={{fontSize: 80, fontWeight: 'bolder'}}>{bookInfo.title}</p>
+                    <p style={{fontSize: 50, color: 'gray'}}>{bookInfo.authors.join(',')}</p>
+                    <p style={{fontSize: 30}}>{bookInfo.publishedDate}</p>
+                    <p>{bookInfo.averageRating}</p>
+                    <p>{bookInfo.description}</p>
+                    <Button onClick={() => setModalShow(true)}>Leyendo Ahora</Button>
+                    <Button onClick={onPlannningToReadClicked}>Planeo Leer</Button>
+                </div>
+                
             </div>
-            <img src={bookInfo.imageLinks.thumbnail} />
-            <p>Id: {bookInfo.id}</p>
-            <p>Title: {bookInfo.title}</p>
-            <p>Published Date: {bookInfo.publishedDate}</p>
-            <p>Average Rating: {bookInfo.averageRating}</p>
-            <Button onClick={() => setModalShow(true)}>Leyendo Ahora</Button>
-            <Button onClick={onPlannningToReadClicked}>Planeo Leer</Button>
 
             <Modal show={modalShow} onHide={() => setModalShow(false)}>
                 <Modal.Header closeButton>
