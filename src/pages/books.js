@@ -9,8 +9,13 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import app from "../base.js"
 import BookCard from '../components/book-card'
+import {
+  useParams
+} from "react-router-dom";
+import queryString from 'query-string'
 
-const BooksPage = ({ history }) => {
+
+const BooksPage = ({ history, location }) => {
   let [textQuery, setTextQuery] = useState("")
   let [books, setBooks] = useState([])
   const [userOnline, setUserOnline] = useState([])
@@ -19,10 +24,14 @@ const BooksPage = ({ history }) => {
 
   manage.allowAccess({history})
   useEffect(() => {
+    const values = queryString.parse(location.search)
+    console.log({values})
     app.auth().onAuthStateChanged((user) => {
       setUserOnline(user)
     })
-  })
+    setTextQuery(values.query)
+    searchBooks()
+  }, [])
   const NavBarStatus = () => {
     if (userOnline) {
       return [<Nav.Link href="/profile" key={3}> Profile </Nav.Link>,
@@ -43,8 +52,16 @@ const BooksPage = ({ history }) => {
   }
 
   const searchBooks = () => {
+    console.log({textQuery})
+    if (!textQuery) {
+      return
+    } 
     const library = new Library()
     setIsLoading(true)
+    history.push({
+      pathname: '/books',
+      search: '?query=' + textQuery
+    })
     library.searchBooks({
       textQuery
     }).then(result => {
@@ -99,6 +116,7 @@ const BooksPage = ({ history }) => {
                   fontSize: 40
                 }}
                 onKeyPress={onKeyUp} 
+                value={textQuery}
               />
               <Button 
                 style={{width: 300}}
