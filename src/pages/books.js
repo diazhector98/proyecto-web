@@ -34,12 +34,12 @@ const BooksPage = ({ history, location }) => {
   }, [])
   const NavBarStatus = () => {
     if (userOnline) {
-      return [<Nav.Link href="/profile" key={3}> Profile </Nav.Link>,
-      <Button variant="light" key={4} onClick={LogOut}>Log Out</Button>]
+      return [<Nav.Link href="/profile" key={3}> Perfíl </Nav.Link>,
+      <Button variant="light" key={4} onClick={LogOut}>Salir de Cuenta</Button>]
     }
     else {
       return [<Nav.Link href="/login" key={0}> Log In </Nav.Link>,
-      <Nav.Link href="/signup" key={2}> Sign Up </Nav.Link>]
+      <Nav.Link href="/signup" key={2}> Crear Cuenta </Nav.Link>]
     }
   }
 
