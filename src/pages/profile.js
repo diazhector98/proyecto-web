@@ -214,7 +214,7 @@ const ProfilePage = ({ history }) => {
         <div>
             <Navbar bg="light"
                 variant="light" >
-                <Navbar.Brand href="/home" >
+                <Navbar.Brand >
                     <img src={logo} alt="Logo" height="60px" width="90" />
                 </Navbar.Brand>
                 <Nav className="mr-auto" >
