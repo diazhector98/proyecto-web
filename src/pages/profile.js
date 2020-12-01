@@ -78,6 +78,11 @@ const ProfilePage = ({ history }) => {
             pr.[today] = pagesReadToday + delta
             console.log({pr})
             setPagesRead(pr)
+        } else {
+            setPagesReadToday(pagesReadToday + delta)
+            mongo.setPagesRead({firebaseId: userInfo.firebaseId, date: today, pages: pagesReadToday + delta}).then((result) => {
+                console.log({result})
+            })
         }
         mongo.updateBookCurrentPage({
             bookId,
