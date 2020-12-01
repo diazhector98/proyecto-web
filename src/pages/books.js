@@ -8,6 +8,7 @@ import logo from '../pages/assets/logo_web.png'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import app from "../base.js"
+import BookCard from '../components/book-card'
 
 const BooksPage = ({ history }) => {
   let [textQuery, setTextQuery] = useState("")
@@ -112,11 +113,7 @@ const BooksPage = ({ history }) => {
             <div style={{ display: "flex", flexWrap: "wrap" }} >
               {books.map((book, index) => {
                 return (
-                  <div style={{ margin: 40, width: 200 }} onClick={() => onBookSelected(book.id)}>
-                    <img style={{ width: 100, height: 200 }} src={book.imageLinks ? book.imageLinks.smallThumbnail : "Alt text"} />
-                    <p key={index} > < b > {book.title} </b> </p >
-                    <p> {book.subtitle} </p>
-                  </div >
+                  <BookCard book={book} onBookSelected={onBookSelected} />
                 )
               })}
             </div>
