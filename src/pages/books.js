@@ -13,6 +13,7 @@ const BooksPage = ({ history }) => {
   let [textQuery, setTextQuery] = useState("")
   let [books, setBooks] = useState([])
   const [userOnline, setUserOnline] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
   const manage = new ManageUser()
 
   manage.allowAccess({history})
@@ -42,6 +43,7 @@ const BooksPage = ({ history }) => {
 
   const searchBooks = () => {
     const library = new Library()
+    setIsLoading(true)
     library.searchBooks({
       textQuery
     }).then(result => {
@@ -52,6 +54,7 @@ const BooksPage = ({ history }) => {
         books
       } = result.data
       setBooks(books)
+      setIsLoading(false)
     })
   }
 
@@ -96,7 +99,14 @@ const BooksPage = ({ history }) => {
                   fontSize: 40
                 }} 
               />
-              <Button style={{width: 300}}id="buscarLibro" variant="primary" onClick={searchBooks} > Buscar </Button>
+              <Button 
+                style={{width: 300}}
+                id="buscarLibro" 
+                variant="primary" 
+                disabled={isLoading}
+                onClick={searchBooks} > 
+                {isLoading ? 'Cargando' : 'Buscar'} 
+              </Button>
             </div>
             
             <div style={{ display: "flex", flexWrap: "wrap" }} >
