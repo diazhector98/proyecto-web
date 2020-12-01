@@ -69,18 +69,11 @@ const BooksPage = ({ history }) => {
         </Navbar.Brand>
 
         <Nav className="mr-auto" >
-          <Nav.Link href="/books" > Mis libros </Nav.Link>
+          <Nav.Link href="/books" > Buscar Libros </Nav.Link>
         </Nav >
 
         <Form inline >
           <NavBarStatus />
-          <Form.Control type="text"
-            placeholder="Busca un libro"
-            className="mr-sm-2"
-            onChange={
-              (e) => setTextQuery(e.target.value)
-            } />
-          <Button id="buscarLibro" variant="outline-primary" onClick={searchBooks} > Search </Button>
         </Form >
       </Navbar>
 
