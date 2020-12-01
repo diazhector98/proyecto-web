@@ -14,6 +14,7 @@ import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 import moment from 'moment'
 import WeekStatsChart from '../components/week-stats-chart'
+import Spinner from 'react-bootstrap/Spinner'
 
 const READING = 0
 const PLANNING = 1
@@ -28,6 +29,7 @@ const ProfilePage = ({ history }) => {
         pagesRead: null
     })
 
+    const [loading, setLoading] = useState(true)
     const [pagesRead, setPagesRead] = useState(null)
     let [textQuery, setTextQuery] = useState("")
     let [books, setBooks] = useState([])
@@ -48,22 +50,6 @@ const ProfilePage = ({ history }) => {
         }
         return false
     }
-
-
-    const searchBooks = () => {
-        const library = new Library()
-        library.searchBooks({
-          textQuery
-        }).then(result => {
-          console.log({
-            result
-          })
-          const {
-            books
-          } = result.data
-          setBooks(books)
-        })
-      }
 
     const getUserBookInfo = (id, books) => {
         for (let i = 0; i < books.length; i++) {
@@ -168,7 +154,7 @@ const ProfilePage = ({ history }) => {
                         setPlanningToReadBooks(planningBooks)
                         setReadingNowBooks(readingBooks)
                         setReadBooks(readBooks)
-
+                        setLoading(false)
                     })
                 })
             }
@@ -216,21 +202,9 @@ const ProfilePage = ({ history }) => {
                 <Navbar.Brand href="/home" >
                     <img src={logo} alt="Logo" height="60px" width="90" />
                 </Navbar.Brand>
-
                 <Nav className="mr-auto" >
-                    <Nav.Link href="/books" > Mis libros </Nav.Link>
+                    <Nav.Link href="/books" > Buscar Libros </Nav.Link>
                 </Nav >
-
-                <Form inline >
-                    <NavBarStatus />
-                    <Form.Control type="text"
-                        placeholder="Busca un libro"
-                        className="mr-sm-2"
-                        onChange={
-                            (e) => setTextQuery(e.target.value)
-                        } />
-                    <Button id="buscarLibro" variant="outline-primary" onClick={searchBooks} > Search </Button>
-                </Form >
             </Navbar>
             <Card style={{
                 display: 'flex',
@@ -243,31 +217,27 @@ const ProfilePage = ({ history }) => {
                     margin: 20,
                     padding: 10
                 }}>
-                    <h1>Profile</h1>
+                    <h1>Perfíl</h1>
+                    {loading ?  <Spinner animation="border" role="status"></Spinner> : null}
                     <form>
                         <div>
                             <label>
-                                Name: <ProfileName />
+                                <ProfileName />
                             </label>
                         </div>
                         <div>
                             <label>
-                                Email: {userInfo.email}
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                UserId: {userInfo.firebaseId}
+                                {userInfo.email}
                             </label>
                         </div>
                     </form>
                     <div>
                         <Row>
                             <Col>
-                                <Button type="LogOut" onClick={LogOut}>Log Out</Button>
+                                <Button type="LogOut" onClick={LogOut}>Cerrar Sesión</Button>
                             </Col>
                             <Col>
-                                <Button type="Danger" onClick={Delete}>Delete Account</Button>
+                                <Button type="Danger" onClick={Delete}>Borrar cuenta</Button>
                             </Col>
                         </Row>
                     </div>
