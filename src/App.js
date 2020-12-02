@@ -24,7 +24,6 @@ function App() {
           <Route path="/" exact component={LandingPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/signup" component={SignUpPage} />
-          <Route path="/home" component={homePage} />
           <Route path="/category" component={categoryPage} />
           <Route path="/books" component={bookPage} />
           <Route path="/test" component={test} />

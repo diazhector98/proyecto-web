@@ -7,7 +7,7 @@ class ManageUser {
             app.auth().signOut().then(() => {
                 console.log("User has left")
             })
-            history.push("/home");
+            history.push("/");
         } catch (error) {
             alert(error);
         }

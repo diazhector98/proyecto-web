@@ -14,10 +14,13 @@ import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 import moment from 'moment'
 import WeekStatsChart from '../components/week-stats-chart'
+import Spinner from 'react-bootstrap/Spinner'
+import Recommendations from '../components/recommendations'
 
 const READING = 0
 const PLANNING = 1
 const READ = 2
+const RECOMMENDATIONS = 3
 
 const ProfilePage = ({ history }) => {
     var uid;
@@ -28,6 +31,7 @@ const ProfilePage = ({ history }) => {
         pagesRead: null
     })
 
+    const [loading, setLoading] = useState(true)
     const [pagesRead, setPagesRead] = useState(null)
     let [textQuery, setTextQuery] = useState("")
     let [books, setBooks] = useState([])
@@ -37,6 +41,7 @@ const ProfilePage = ({ history }) => {
     const [planningToReadBooks, setPlanningToReadBooks] = useState([])
     const [readBooks, setReadBooks] = useState([])
     const [section, setSection] = useState(READING)
+    const [recommendedBookIds, setRecommendedBookIds] = useState([])
 
     const bookIdInBooks = (id, books) => {
         for (let i = 0; i < books.length; i++) {
@@ -48,22 +53,6 @@ const ProfilePage = ({ history }) => {
         }
         return false
     }
-
-
-    const searchBooks = () => {
-        const library = new Library()
-        library.searchBooks({
-          textQuery
-        }).then(result => {
-          console.log({
-            result
-          })
-          const {
-            books
-          } = result.data
-          setBooks(books)
-        })
-      }
 
     const getUserBookInfo = (id, books) => {
         for (let i = 0; i < books.length; i++) {
@@ -89,6 +78,11 @@ const ProfilePage = ({ history }) => {
             pr.[today] = pagesReadToday + delta
             console.log({pr})
             setPagesRead(pr)
+        } else {
+            setPagesReadToday(pagesReadToday + delta)
+            mongo.setPagesRead({firebaseId: userInfo.firebaseId, date: today, pages: pagesReadToday + delta}).then((result) => {
+                console.log({result})
+            })
         }
         mongo.updateBookCurrentPage({
             bookId,
@@ -129,6 +123,10 @@ const ProfilePage = ({ history }) => {
                         }
                     }
 
+                    mongo.getUserRecommendations({firebaseId: uid}).then((result) => {
+                        setRecommendedBookIds(result.data)
+                    })
+
                     mongo.getUserBooks({
                         firebaseId: uid
                     }).then((result) => {
@@ -150,7 +148,6 @@ const ProfilePage = ({ history }) => {
                                 planningBooks.push(book)
                             }
 
-                            console.log({ userData })
                             if (userData.booksRead && bookIdInBooks(bookId, userData.booksRead)) {
                                 readBooks.push(book)
                             }
@@ -168,7 +165,7 @@ const ProfilePage = ({ history }) => {
                         setPlanningToReadBooks(planningBooks)
                         setReadingNowBooks(readingBooks)
                         setReadBooks(readBooks)
-
+                        setLoading(false)
                     })
                 })
             }
@@ -198,6 +195,10 @@ const ProfilePage = ({ history }) => {
         })
     }
 
+    const onMoreInfoClicked = (bookId) => {
+        history.push(`/book/${bookId}`)
+    }
+
 
     function formatName() {
         return userInfo.name;
@@ -213,24 +214,12 @@ const ProfilePage = ({ history }) => {
         <div>
             <Navbar bg="light"
                 variant="light" >
-                <Navbar.Brand href="/home" >
+                <Navbar.Brand >
                     <img src={logo} alt="Logo" height="60px" width="90" />
                 </Navbar.Brand>
-
                 <Nav className="mr-auto" >
-                    <Nav.Link href="/books" > Mis libros </Nav.Link>
+                    <Nav.Link href="/books" > Buscar Libros </Nav.Link>
                 </Nav >
-
-                <Form inline >
-                    <NavBarStatus />
-                    <Form.Control type="text"
-                        placeholder="Busca un libro"
-                        className="mr-sm-2"
-                        onChange={
-                            (e) => setTextQuery(e.target.value)
-                        } />
-                    <Button id="buscarLibro" variant="outline-primary" onClick={searchBooks} > Search </Button>
-                </Form >
             </Navbar>
             <Card style={{
                 display: 'flex',
@@ -243,31 +232,27 @@ const ProfilePage = ({ history }) => {
                     margin: 20,
                     padding: 10
                 }}>
-                    <h1>Profile</h1>
+                    <h1>Perfíl</h1>
+                    {loading ?  <Spinner animation="border" role="status"></Spinner> : null}
                     <form>
                         <div>
                             <label>
-                                Name: <ProfileName />
+                                <ProfileName />
                             </label>
                         </div>
                         <div>
                             <label>
-                                Email: {userInfo.email}
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                UserId: {userInfo.firebaseId}
+                                {userInfo.email}
                             </label>
                         </div>
                     </form>
                     <div>
                         <Row>
                             <Col>
-                                <Button type="LogOut" onClick={LogOut}>Log Out</Button>
+                                <Button type="LogOut" onClick={LogOut}>Cerrar Sesión</Button>
                             </Col>
                             <Col>
-                                <Button type="Danger" onClick={Delete}>Delete Account</Button>
+                                <Button type="Danger" onClick={Delete}>Borrar cuenta</Button>
                             </Col>
                         </Row>
                     </div>
@@ -284,9 +269,30 @@ const ProfilePage = ({ history }) => {
                     <div style={{
                         display: 'flex',
                     }}>
-                        <Button onClick={() => setSection(READING)}> Leyendo </Button>
-                        <Button onClick={() => setSection(PLANNING)}> Planeando Leer </Button>
-                        <Button onClick={() => setSection(READ)}> Leídos </Button>
+                        <Button 
+                            variant={section === READING ? 'primary' : 'outline-primary'}
+                            style={{fontSize: 30, margin: 10}} 
+                            onClick={() => setSection(READING)}> 
+                            Leyendo 
+                        </Button>
+                        <Button 
+                            variant={section === PLANNING ? 'primary' : 'outline-primary'}
+                            style={{fontSize: 30, margin: 10}} 
+                            onClick={() => setSection(PLANNING)}> 
+                            Planeando Leer 
+                        </Button>
+                        <Button 
+                            variant={section === READ ? 'primary' : 'outline-primary'}
+                            style={{fontSize: 30, margin: 10}} 
+                            onClick={() => setSection(READ)}> 
+                            Leídos 
+                        </Button>
+                        <Button 
+                            variant={section === RECOMMENDATIONS ? 'primary' : 'outline-primary'}
+                            style={{fontSize: 30, margin: 10}} 
+                            onClick={() => setSection(RECOMMENDATIONS)}> 
+                            Recomendaciones 
+                        </Button>
                     </div>
 
                     {
@@ -297,12 +303,22 @@ const ProfilePage = ({ history }) => {
                                 books={readingNowBooks}
                                 onUpdateBookCurrentPage={onUpdateBookCurrentPage}
                                 onFinishBookClicked={onFinishBookClicked}
+                                onMoreInfoClicked={onMoreInfoClicked}
                             /> :
-                            section == PLANNING ?
-                                <BookList title="Libros Planeando Leer" books={planningToReadBooks} /> :
-                                section == READ ?
-                                    <BookList title="Libros Leidos" books={readBooks} /> :
-                                    null
+                        section == PLANNING ?
+                            <BookList 
+                                title="Libros Planeando Leer" 
+                                books={planningToReadBooks} 
+                                onMoreInfoClicked={onMoreInfoClicked}
+                                /> :
+                        section == READ ?
+                            <BookList title="Libros Leidos" books={readBooks} 
+                                onMoreInfoClicked={onMoreInfoClicked}
+                            
+                            /> :
+                        section == RECOMMENDATIONS ?
+                            <Recommendations bookIds={recommendedBookIds} onMoreInfoClicked={onMoreInfoClicked}/> :
+                        null
                     }
                 </div>
 

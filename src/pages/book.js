@@ -13,6 +13,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import logo from '../pages/assets/logo_web.png'
 import NavBarSearch from '../utils/navbarSearch'
+import ReactStars from "react-rating-stars-component";
 
 import {
     useParams
@@ -43,6 +44,7 @@ const BookPage = ({ history }) => {
     const [userInfo, setUserInfo] = useState({
         userId: "",
     })
+    const [rating, setRating] = useState(0)
 
     useEffect(() => {
         const library = new Library()
@@ -56,6 +58,8 @@ const BookPage = ({ history }) => {
             })
             console.log({result})
             setBookInfo(result.data)
+            console.log(result.data.averageRating)
+            setRating(result.data.averageRating)
         }).catch((e) => {
             console.log({ e })
         })
@@ -120,12 +124,12 @@ const BookPage = ({ history }) => {
 
     const NavBarStatus = ({ }) => {
         if (userOnline) {
-            return [<Nav.Link href="/profile" key={3}> Profile </Nav.Link>,
-            <Button variant="light" key={4} onClick={LogOut}>Log Out</Button>]
+            return [<Nav.Link href="/profile" key={3}> Perfíl </Nav.Link>,
+            <Button variant="light" key={4} onClick={LogOut}>Salir de Cuenta</Button>]
         }
         else {
             return [<Nav.Link href="/login" key={0}> Log In </Nav.Link>,
-            <Nav.Link href="/signup" key={2}> Sign Up </Nav.Link>]
+            <Nav.Link href="/signup" key={2}> Crear Cuenta </Nav.Link>]
         }
     }
 
@@ -138,18 +142,11 @@ const BookPage = ({ history }) => {
                 </Navbar.Brand>
 
                 <Nav className="mr-auto" >
-                    <Nav.Link href="/books" > Mis libros </Nav.Link>
+                    <Nav.Link href="/books" > Buscar Libros </Nav.Link>
                 </Nav >
 
                 <Form inline >
                     <NavBarStatus />
-                    <Form.Control type="text"
-                        placeholder="Busca un libro"
-                        className="mr-sm-2"
-                        onChange={
-                            (e) => setTextQuery(e.target.value)
-                        } />
-                    <Button id="buscarLibro" variant="outline-primary" onClick={searchBooks} > Search </Button>
                 </Form >
             </Navbar>
             <div style={{
@@ -166,6 +163,8 @@ const BookPage = ({ history }) => {
                             width: '100%'
                         }}
                         src={bookInfo.imageLinks.thumbnail} />
+
+                    {rating !== 0 && rating !== undefined ? <ReactStars  isHalf={true} size={40} value={rating} count={5}/> : null}
                 </div>
 
                 <div style={{
@@ -175,10 +174,9 @@ const BookPage = ({ history }) => {
                     <p style={{fontSize: 80, fontWeight: 'bolder'}}>{bookInfo.title}</p>
                     <p style={{fontSize: 50, color: 'gray'}}>{bookInfo.authors.join(',')}</p>
                     <p style={{fontSize: 30}}>{bookInfo.publishedDate}</p>
-                    <p>{bookInfo.averageRating}</p>
                     <p>{bookInfo.description}</p>
-                    <Button onClick={() => setModalShow(true)}>Leyendo Ahora</Button>
-                    <Button onClick={onPlannningToReadClicked}>Planeo Leer</Button>
+                    <Button style={{margin: 10, fontSize: 40}} variant="outline-primary" onClick={() => setModalShow(true)}>Leyendo Ahora</Button>
+                    <Button style={{margin: 10, fontSize: 40}} variant="outline-primary" onClick={onPlannningToReadClicked}>Planeo Leer</Button>
                 </div>
                 
             </div>

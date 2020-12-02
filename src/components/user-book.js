@@ -31,7 +31,8 @@ const UserBook = (
         book, 
         onUpdateBookCurrentPage, 
         showProgress,
-        onFinishBookClicked
+        onFinishBookClicked,
+        onMoreInfoClicked
     }
 ) => {
     const {
@@ -47,7 +48,6 @@ const UserBook = (
     const [saveButtonEnabled, setSaveButtonEnabled] = useState(false)
 
     useEffect(() => {
-        console.log({book})
         if (book.currentPage && book.totalPages) {
             setCurrentPage(book.currentPage)
             setTotalPages(book.totalPages)
@@ -87,6 +87,7 @@ const UserBook = (
             <div style={bookDetailsContainerStyles}>
                 <h3>{title}</h3>
                 <h4>{authors.join(',')}</h4>
+                <Button variant="outline-secondary" onClick={() => onMoreInfoClicked(bookId)}>Más Información</Button>
                 {
                     showProgress && currentPage !== null && totalPages !== null ?
                     <div style={{width: '100%'}}>
@@ -110,6 +111,7 @@ const UserBook = (
                     null
                     
                 }
+                
                 
             </div>
             

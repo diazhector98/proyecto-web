@@ -8,27 +8,38 @@ import logo from '../pages/assets/logo_web.png'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import app from "../base.js"
+import BookCard from '../components/book-card'
+import {
+  useParams
+} from "react-router-dom";
+import queryString from 'query-string'
 
-const BooksPage = ({ history }) => {
+
+const BooksPage = ({ history, location }) => {
   let [textQuery, setTextQuery] = useState("")
   let [books, setBooks] = useState([])
   const [userOnline, setUserOnline] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
   const manage = new ManageUser()
 
   manage.allowAccess({history})
   useEffect(() => {
+    const values = queryString.parse(location.search)
+    console.log({values})
     app.auth().onAuthStateChanged((user) => {
       setUserOnline(user)
     })
-  })
+    setTextQuery(values.query)
+    searchBooks()
+  }, [])
   const NavBarStatus = () => {
     if (userOnline) {
-      return [<Nav.Link href="/profile" key={3}> Profile </Nav.Link>,
-      <Button variant="light" key={4} onClick={LogOut}>Log Out</Button>]
+      return [<Nav.Link href="/profile" key={3}> Perfíl </Nav.Link>,
+      <Button variant="light" key={4} onClick={LogOut}>Salir de Cuenta</Button>]
     }
     else {
       return [<Nav.Link href="/login" key={0}> Log In </Nav.Link>,
-      <Nav.Link href="/signup" key={2}> Sign Up </Nav.Link>]
+      <Nav.Link href="/signup" key={2}> Crear Cuenta </Nav.Link>]
     }
   }
 
@@ -41,7 +52,16 @@ const BooksPage = ({ history }) => {
   }
 
   const searchBooks = () => {
+    console.log({textQuery})
+    if (!textQuery) {
+      return
+    } 
     const library = new Library()
+    setIsLoading(true)
+    history.push({
+      pathname: '/books',
+      search: '?query=' + textQuery
+    })
     library.searchBooks({
       textQuery
     }).then(result => {
@@ -52,7 +72,14 @@ const BooksPage = ({ history }) => {
         books
       } = result.data
       setBooks(books)
+      setIsLoading(false)
     })
+  }
+
+  const onKeyUp = (event) => {
+    if (event.key === "Enter") {
+      searchBooks()
+    }
   }
 
   return (
@@ -65,33 +92,51 @@ const BooksPage = ({ history }) => {
         </Navbar.Brand>
 
         <Nav className="mr-auto" >
-          <Nav.Link href="/books" > Mis libros </Nav.Link>
+          <Nav.Link href="/books" > Buscar Libros </Nav.Link>
         </Nav >
 
         <Form inline >
           <NavBarStatus />
-          <Form.Control type="text"
-            placeholder="Busca un libro"
-            className="mr-sm-2"
-            onChange={
-              (e) => setTextQuery(e.target.value)
-            } />
-          <Button id="buscarLibro" variant="outline-primary" onClick={searchBooks} > Search </Button>
         </Form >
       </Navbar>
 
       <div>
-        <div style={{ display: "flex", flexWrap: "wrap" }} >
-          {books.map((book, index) => {
-            return (
-              <div style={{ margin: 40, width: 200 }} onClick={() => onBookSelected(book.id)}>
-                <img style={{ width: 100, height: 200 }} src={book.imageLinks ? book.imageLinks.smallThumbnail : "Alt text"} />
-                <p key={index} > < b > {book.title} </b> </p >
-                <p> {book.subtitle} </p>
-              </div >
-            )
-          })
-          } </div>
+          <div style={{textAlign: 'left', padding: 50}}>
+
+            <h1 style={{fontSize: 150, fontWeight: 'bolder', color: 'black'}}> Busca Un Libro </h1>
+            <div style={{display: 'flex'}}>
+              <Form.Control 
+                type="text"
+                placeholder="Harry Potter"
+                className="mr-sm-2"
+                onChange={
+                  (e) => setTextQuery(e.target.value)
+                }
+                style={{
+                  fontSize: 40
+                }}
+                onKeyPress={onKeyUp} 
+                value={textQuery}
+              />
+              <Button 
+                style={{width: 300}}
+                id="buscarLibro" 
+                variant="primary" 
+                disabled={isLoading}
+                onClick={searchBooks} > 
+                {isLoading ? 'Cargando' : 'Buscar'} 
+              </Button>
+            </div>
+            
+            <div style={{ display: "flex", flexWrap: "wrap" }} >
+              {books.map((book, index) => {
+                return (
+                  <BookCard book={book} onBookSelected={onBookSelected} />
+                )
+              })}
+            </div>
+
+          </div> 
       </div>
     </div>
   )

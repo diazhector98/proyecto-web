@@ -6,13 +6,12 @@ const BookList = ({
     books, 
     onUpdateBookCurrentPage, 
     showProgress,
-    onFinishBookClicked
+    onFinishBookClicked,
+    onMoreInfoClicked
 }) => {
     return (
         <div>
-            <h1>{title}</h1>
             {books ? books.map((book, index) => {
-                console.log({book})
                 return (
                 <UserBook 
                     key={index} 
@@ -20,6 +19,7 @@ const BookList = ({
                     onUpdateBookCurrentPage={onUpdateBookCurrentPage}
                     showProgress={showProgress}
                     onFinishBookClicked={onFinishBookClicked}
+                    onMoreInfoClicked={onMoreInfoClicked}
                 />)
             }) : null}
         </div>

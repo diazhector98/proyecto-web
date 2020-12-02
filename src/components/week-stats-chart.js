@@ -49,7 +49,6 @@ const WeekStatsChart = ({pagesRead}) => {
     useEffect(() => {
         const format = "DD-MM-YY"
         const today = moment().format(format)
-        console.log({pagesRead})
         if (pagesRead) {
             let labels = []
             let values = []
@@ -86,7 +85,6 @@ const WeekStatsChart = ({pagesRead}) => {
                 }
               ]
             })
-            console.log({labels, values})
         }
     }, [pagesRead])
     return (
